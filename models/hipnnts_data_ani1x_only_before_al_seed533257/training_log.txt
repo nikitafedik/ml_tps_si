@@ -1,0 +1,2953 @@
+model seed: 533257
+Determined Inputs: ["Species(db_name='Z')", "Positions(db_name='R')"]
+Determined Outputs: ['forces', 'L^P_Reg(hipnn_model,p=2)', 'HEnergy.hierarchicality', 'HEnergy.mol_energy']
+Determined Targets: ['forces', "Species(db_name='Z')", 'HEnergy.mol_energy']
+Device was not specified. Attempting to default to device: cuda:0
+Arrays found:  {'Z': 'data-Ani1x_dzZ.npy', 'R': 'data-Ani1x_dzR.npy', 'Grad': 'data-Ani1x_dzGrad.npy', 'T': 'data-Ani1x_dzT.npy'}
+Data types:
+{'Z': dtype('int64'), 'R': dtype('float32'), 'Grad': dtype('float32'), 'T': dtype('float32')}
+All arrays:
+--------------------------------------------------------------------------------------
+| Name               | dtype              | shape                                    |
+--------------------------------------------------------------------------------------
+| Z                  | dtype('int64')     | (4956005, 63)                            |
+| R                  | dtype('float32')   | (4956005, 63, 3)                         |
+| Grad               | dtype('float32')   | (4956005, 63, 3)                         |
+| T                  | dtype('float32')   | (4956005, 1)                             |
+--------------------------------------------------------------------------------------
+Database: Using auto-generated data indices
+Arrays for split: test
+--------------------------------------------------------------------------------------
+| Name               | dtype              | shape                                    |
+--------------------------------------------------------------------------------------
+| Z                  | torch.int64        | torch.Size([495600, 63])                 |
+| R                  | torch.float32      | torch.Size([495600, 63, 3])              |
+| Grad               | torch.float32      | torch.Size([495600, 63, 3])              |
+| T                  | torch.float32      | torch.Size([495600, 1])                  |
+| indices            | torch.int64        | torch.Size([495600])                     |
+| split_indices      | torch.int64        | torch.Size([495600])                     |
+--------------------------------------------------------------------------------------
+Arrays for split: valid
+--------------------------------------------------------------------------------------
+| Name               | dtype              | shape                                    |
+--------------------------------------------------------------------------------------
+| Z                  | torch.int64        | torch.Size([495600, 63])                 |
+| R                  | torch.float32      | torch.Size([495600, 63, 3])              |
+| Grad               | torch.float32      | torch.Size([495600, 63, 3])              |
+| T                  | torch.float32      | torch.Size([495600, 1])                  |
+| indices            | torch.int64        | torch.Size([495600])                     |
+| split_indices      | torch.int64        | torch.Size([495600])                     |
+--------------------------------------------------------------------------------------
+Arrays for split: train
+--------------------------------------------------------------------------------------
+| Name               | dtype              | shape                                    |
+--------------------------------------------------------------------------------------
+| Z                  | torch.int64        | torch.Size([3964805, 63])                |
+| R                  | torch.float32      | torch.Size([3964805, 63, 3])             |
+| Grad               | torch.float32      | torch.Size([3964805, 63, 3])             |
+| T                  | torch.float32      | torch.Size([3964805, 1])                 |
+| indices            | torch.int64        | torch.Size([3964805])                    |
+| split_indices      | torch.int64        | torch.Size([3964805])                    |
+--------------------------------------------------------------------------------------
+Computed E0 energies: tensor([[ -30.4176, -212.2888,  -92.5253,  -92.0186]])
+Warning: When controller is specified, argument 'stopping_key' should be given to the controller. Value (Error Loss) ignored.
+Device was not specified. Attempting to default to device: cuda:0
+Using device:  cuda:0
+Beginning training.
+Model:
+Inputs:
+	 I0 : SpeciesNode('Species(db_name='Z')')<0x14f7d2302520>
+	 I1 : PositionsNode('Positions(db_name='R')')<0x14f783626f70>
+Outputs:
+	 O0 : GradientNode('forces')<0x14f782967700>
+	 O1 : _LPReg('L^P_Reg(hipnn_model,p=2)')<0x14f782253310>
+	 O2 : IndexNode('HEnergy.hierarchicality')<0x14f7828f8fa0>
+	 O3 : IndexNode('HEnergy.mol_energy')<0x14f7829728b0>
+Order:
+I0-------------------> H0  : OneHot
+H0-------------------> H1  : OneHot.encoding
+H0-------------------> H2  : OneHot.nonblank
+H2,H1----------------> H3  : PaddingIndexer
+H3-------------------> H4  : PaddingIndexer.indexed_features
+H3-------------------> H5  : PaddingIndexer.real_atoms
+H3-------------------> H6  : PaddingIndexer.inv_real_atoms
+H3-------------------> H7  : PaddingIndexer.mol_index
+H3-------------------> H8  : PaddingIndexer.atom_index
+H3-------------------> H9  : PaddingIndexer.n_molecules
+H3-------------------> H10 : PaddingIndexer.n_atoms_max
+H2,H6,H5,I1----------> H11 : PairIndexer
+H11------------------> H12 : PairIndexer.pair_dist
+H11------------------> H13 : PairIndexer.pair_coord
+H11------------------> H14 : PairIndexer.pair_second
+H11------------------> H15 : PairIndexer.pair_first
+H13,H4,H12,H15,H14---> H16 : hipnn_model
+H16------------------> O1  : L^P_Reg(hipnn_model,p=2)
+H9,H7,H16------------> H18 : HEnergy
+H18------------------> O3  : HEnergy.mol_energy
+H18------------------> H20 : HEnergy.atom_energies
+O3,I1----------------> O0  : forces
+H18------------------> H22 : HEnergy.energy_terms
+H18------------------> O2  : HEnergy.hierarchicality
+Model Params:
+cuda:0 Fixed torch.int64 torch.Size([9]) moddict.node0.species_map
+cuda:0 Learned torch.float32 torch.Size([20, 128, 4]) moddict.node16.blocks.0.0.base_layer.int_weights
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.0.0.base_layer.vecscales
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.0.0.base_layer.quadscales
+cuda:0 Learned torch.float32 torch.Size([1, 20]) moddict.node16.blocks.0.0.base_layer.sensitivity.mu
+cuda:0 Learned torch.float32 torch.Size([1, 20]) moddict.node16.blocks.0.0.base_layer.sensitivity.sigma
+cuda:0 Learned torch.float32 torch.Size([128, 4]) moddict.node16.blocks.0.0.base_layer.selfint.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.0.0.base_layer.selfint.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.0.0.res_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.0.0.res_layer.bias
+cuda:0 Learned torch.float32 torch.Size([128, 4]) moddict.node16.blocks.0.0.adjust_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.0.1.base_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.0.1.base_layer.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.0.1.res_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.0.1.res_layer.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.0.2.base_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.0.2.base_layer.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.0.2.res_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.0.2.res_layer.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.0.3.base_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.0.3.base_layer.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.0.3.res_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.0.3.res_layer.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.0.4.base_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.0.4.base_layer.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.0.4.res_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.0.4.res_layer.bias
+cuda:0 Learned torch.float32 torch.Size([20, 128, 128]) moddict.node16.blocks.1.0.base_layer.int_weights
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.1.0.base_layer.vecscales
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.1.0.base_layer.quadscales
+cuda:0 Learned torch.float32 torch.Size([1, 20]) moddict.node16.blocks.1.0.base_layer.sensitivity.mu
+cuda:0 Learned torch.float32 torch.Size([1, 20]) moddict.node16.blocks.1.0.base_layer.sensitivity.sigma
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.1.0.base_layer.selfint.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.1.0.base_layer.selfint.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.1.0.res_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.1.0.res_layer.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.1.1.base_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.1.1.base_layer.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.1.1.res_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.1.1.res_layer.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.1.2.base_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.1.2.base_layer.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.1.2.res_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.1.2.res_layer.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.1.3.base_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.1.3.base_layer.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.1.3.res_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.1.3.res_layer.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.1.4.base_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.1.4.base_layer.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.1.4.res_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.1.4.res_layer.bias
+cuda:0 Fixed torch.float32 torch.Size([1, 4]) moddict.node18.layers.0.weight
+cuda:0 Learned torch.float32 torch.Size([1, 128]) moddict.node18.layers.1.weight
+cuda:0 Learned torch.float32 torch.Size([1]) moddict.node18.layers.1.bias
+cuda:0 Learned torch.float32 torch.Size([1, 128]) moddict.node18.layers.2.weight
+cuda:0 Learned torch.float32 torch.Size([1]) moddict.node18.layers.2.bias
+Total Count: 653663
+At least 20 epochs will be run
+__________________________________________________
+Epoch 0:
+Learning rate:     0.001
+Training time:  1156.28 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *    5.3752   *    5.3822
+T-MAE     :    *    3.8716   *    3.8683
+T-RSQ     :    *   0.99993   *   0.99993
+F-RMSE    :    *    8.6048   *    8.5832
+F-MAE     :    *    5.0633   *    5.0575
+F-RSQ     :    *   0.96942   *   0.96938
+T-Hier    :    *    4.7802   *    4.7734
+Error Loss:    *    22.915   *    22.891
+Loss      :    *    27.696   *    27.665
+Best T-RMSE so far:   5.3822
+Epochs since last best: 0
+Current max epochs: 20
+Total epoch time:  1256.91 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 1:
+Learning rate:     0.001
+Training time:  1156.15 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *     4.395   *    4.4063
+T-MAE     :    *    3.1232   *    3.1352
+T-RSQ     :        0.99995       0.99995
+F-RMSE    :    *    8.1635   *    7.7019
+F-MAE     :    *    4.6216   *    4.6103
+F-RSQ     :         0.9724       0.97534
+T-Hier    :    *    1.5405   *    1.5391
+Error Loss:    *    20.303   *    19.854
+Loss      :    *    21.844   *    21.393
+Best T-RMSE so far:   4.4063
+Epochs since last best: 0
+Current max epochs: 21
+Total epoch time:  1254.52 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 2:
+Learning rate:     0.001
+Training time:  1155.36 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         9.5782         9.545
+T-MAE     :         8.4205        8.3982
+T-RSQ     :    *   0.99977   *   0.99977
+F-RMSE    :    *    6.3582   *       6.4
+F-MAE     :    *    3.7691   *     3.766
+F-RSQ     :        0.98324       0.98298
+T-Hier    :    *    1.0845   *     1.082
+Error Loss:         28.126        28.109
+Loss      :         29.211        29.192
+Best T-RMSE so far:   4.4063
+Epochs since last best: 1
+Current max epochs: 21
+Total epoch time:  1257.75 s
+__________________________________________________
+Epoch 3:
+Learning rate:     0.001
+Training time:  1154.84 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *    3.0773   *    3.0711
+T-MAE     :    *    2.0739   *    2.0779
+T-RSQ     :        0.99998       0.99998
+F-RMSE    :    *    6.2385        6.4319
+F-MAE     :    *    3.5007   *    3.4988
+F-RSQ     :        0.98394       0.98281
+T-Hier    :    *   0.84203   *   0.84087
+Error Loss:    *     14.89   *     15.08
+Loss      :    *    15.733   *    15.922
+Best T-RMSE so far:   3.0711
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 23
+Total epoch time:  1257.76 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 4:
+Learning rate:     0.001
+Training time:  1153.78 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         3.8887        3.9099
+T-MAE     :         2.8232        2.8416
+T-RSQ     :        0.99996       0.99996
+F-RMSE    :    *     6.181   *    5.9117
+F-MAE     :    *    3.4149   *    3.4126
+F-RSQ     :        0.98422       0.98547
+T-Hier    :    *    0.7599   *   0.75854
+Error Loss:         16.308        16.076
+Loss      :         17.069        16.835
+Best T-RMSE so far:   3.0711
+Epochs since last best: 1
+Current max epochs: 23
+Total epoch time:  1253.09 s
+__________________________________________________
+Epoch 5:
+Learning rate:     0.001
+Training time:  1154.41 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *    2.8917   *    2.8738
+T-MAE     :    *    1.9511   *    1.9544
+T-RSQ     :        0.99998       0.99998
+F-RMSE    :    *    5.3444   *    5.2518
+F-MAE     :    *    3.1662   *    3.1597
+F-RSQ     :         0.9882       0.98854
+T-Hier    :    *   0.70941   *   0.70778
+Error Loss:    *    13.353   *     13.24
+Loss      :    *    14.064   *    13.949
+Best T-RMSE so far:   2.8738
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 25
+Total epoch time:  1252.23 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 6:
+Learning rate:     0.001
+Training time:  1156.68 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *    2.5253   *    2.5767
+T-MAE     :    *    1.7446   *    1.7583
+T-RSQ     :        0.99998       0.99998
+F-RMSE    :    *    4.6295   *    4.7632
+F-MAE     :    *    2.9009   *     2.903
+F-RSQ     :        0.99115       0.99057
+T-Hier    :    *   0.65451   *   0.65352
+Error Loss:    *      11.8   *    12.001
+Loss      :    *    12.456   *    12.656
+Best T-RMSE so far:   2.5767
+Epochs since last best: 0
+Current max epochs: 26
+Total epoch time:  1255.62 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 7:
+Learning rate:     0.001
+Training time:  1155.68 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *    2.4833   *    2.4769
+T-MAE     :         1.8016        1.7956
+T-RSQ     :        0.99998       0.99998
+F-RMSE    :         4.8237        4.9122
+F-MAE     :    *    2.8389   *    2.8405
+F-RSQ     :        0.99037       0.98997
+T-Hier    :        0.72287       0.72185
+Error Loss:         11.948        12.025
+Loss      :         12.672        12.749
+Best T-RMSE so far:   2.4769
+Epochs since last best: 0
+Current max epochs: 27
+Total epoch time:  1258.36 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 8:
+Learning rate:     0.001
+Training time:  1155.04 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *    2.4611        2.4903
+T-MAE     :    *    1.7427         1.762
+T-RSQ     :        0.99998       0.99998
+F-RMSE    :         4.6753   *    4.4839
+F-MAE     :    *    2.7653   *    2.7683
+F-RSQ     :        0.99094       0.99164
+T-Hier    :    *   0.60657   *   0.60703
+Error Loss:    *    11.644   *    11.505
+Loss      :    *    12.253   *    12.113
+Best T-RMSE so far:   2.4769
+Epochs since last best: 1
+Current max epochs: 27
+Total epoch time:  1254.87 s
+__________________________________________________
+Epoch 9:
+Learning rate:     0.001
+Training time:  1156.12 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *    2.2428   *    2.2669
+T-MAE     :    *    1.5287   *    1.5419
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :    *    4.5476        4.5139
+F-MAE     :    *    2.6414   *    2.6451
+F-RSQ     :         0.9914       0.99153
+T-Hier    :    *   0.57993   *   0.57929
+Error Loss:    *    10.961   *    10.968
+Loss      :    *    11.542   *    11.549
+Best T-RMSE so far:   2.2669
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 29
+Total epoch time:  1258.94 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 10:
+Learning rate:     0.001
+Training time:  1156.3 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         2.3366        2.3626
+T-MAE     :         1.6569        1.6661
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :    *    4.1632   *    4.2431
+F-MAE     :    *    2.5832   *    2.5872
+F-RSQ     :        0.99283       0.99252
+T-Hier    :    *   0.57123   *   0.57061
+Error Loss:    *     10.74   *    10.859
+Loss      :    *    11.313   *    11.432
+Best T-RMSE so far:   2.2669
+Epochs since last best: 1
+Current max epochs: 29
+Total epoch time:  1256.96 s
+__________________________________________________
+Epoch 11:
+Learning rate:     0.001
+Training time:  1156.16 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         2.2901        2.3025
+T-MAE     :         1.6367        1.6419
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :         4.5094        4.3362
+F-MAE     :    *    2.5537   *    2.5545
+F-RSQ     :        0.99162       0.99218
+T-Hier    :    *   0.56378   *   0.56182
+Error Loss:          10.99   *    10.835
+Loss      :         11.556   *    11.399
+Best T-RMSE so far:   2.2669
+Epochs since last best: 2
+Current max epochs: 29
+Total epoch time:  1259.61 s
+__________________________________________________
+Epoch 12:
+Learning rate:     0.001
+Training time:  1155.15 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         2.4395          2.48
+T-MAE     :         1.7262        1.7485
+T-RSQ     :        0.99999       0.99998
+F-RMSE    :         4.1804        4.3348
+F-MAE     :    *    2.4439   *    2.4485
+F-RSQ     :        0.99276       0.99219
+T-Hier    :    *   0.53731   *    0.5368
+Error Loss:          10.79        11.012
+Loss      :          11.33        11.551
+Best T-RMSE so far:   2.2669
+Epochs since last best: 3
+Current max epochs: 29
+Total epoch time:  1254.36 s
+__________________________________________________
+Epoch 13:
+Learning rate:     0.001
+Training time:  1156.17 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *    2.2165   *    2.2654
+T-MAE     :         1.5868         1.611
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :         4.2975   *    3.9182
+F-MAE     :    *    2.4072   *    2.4089
+F-RSQ     :         0.9924       0.99362
+T-Hier    :        0.54524       0.54475
+Error Loss:    *    10.508   *    10.204
+Loss      :    *    11.056   *    10.751
+Best T-RMSE so far:   2.2654
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 33
+Total epoch time:  1257.12 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 14:
+Learning rate:     0.001
+Training time:  1155.37 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *    2.1775   *    2.2031
+T-MAE     :    *    1.5167   *    1.5359
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :    *    3.9731        4.1173
+F-MAE     :    *    2.3717   *    2.3772
+F-RSQ     :        0.99347       0.99295
+T-Hier    :    *    0.5269   *   0.52596
+Error Loss:    *    10.039        10.233
+Loss      :    *    10.568        10.762
+Best T-RMSE so far:   2.2031
+Epochs since last best: 0
+Current max epochs: 34
+Total epoch time:  1259.09 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 15:
+Learning rate:     0.001
+Training time:  1155.47 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *     1.987   *    2.0679
+T-MAE     :    *     1.369   *    1.3871
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :         4.3801        5.9532
+F-MAE     :    *     2.366   *    2.3754
+F-RSQ     :        0.99205       0.98527
+T-Hier    :    *   0.51949   *   0.51886
+Error Loss:         10.102        11.784
+Loss      :         10.624        12.305
+Best T-RMSE so far:   2.0679
+Epochs since last best: 0
+Current max epochs: 35
+Total epoch time:  1252.34 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 16:
+Learning rate:     0.001
+Training time:  1155.42 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         2.0959        2.0933
+T-MAE     :         1.4793        1.4738
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :         4.1855        4.9912
+F-MAE     :         2.3863        2.3926
+F-RSQ     :        0.99273       0.98965
+T-Hier    :        0.52906       0.52823
+Error Loss:         10.147        10.951
+Loss      :         10.679        11.482
+Best T-RMSE so far:   2.0679
+Epochs since last best: 1
+Current max epochs: 35
+Total epoch time:  1253.29 s
+__________________________________________________
+Epoch 17:
+Learning rate:     0.001
+Training time:  1155.51 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         2.2339        2.2353
+T-MAE     :         1.6685        1.6642
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :    *     3.735   *    3.6262
+F-MAE     :    *     2.259   *     2.265
+F-RSQ     :         0.9942       0.99453
+T-Hier    :    *   0.51174   *   0.51226
+Error Loss:    *    9.8964   *    9.7907
+Loss      :    *    10.411   *    10.306
+Best T-RMSE so far:   2.0679
+Epochs since last best: 2
+Current max epochs: 35
+Total epoch time:  1256.01 s
+__________________________________________________
+Epoch 18:
+Learning rate:     0.001
+Training time:  1154.76 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         3.0346        3.0509
+T-MAE     :         2.3284         2.329
+T-RSQ     :        0.99998       0.99998
+F-RMSE    :         5.1305        5.1823
+F-MAE     :         3.1634         3.169
+F-RSQ     :        0.98908       0.98884
+T-Hier    :        0.65904       0.65767
+Error Loss:         13.657        13.731
+Loss      :         14.319        14.392
+Best T-RMSE so far:   2.0679
+Epochs since last best: 3
+Current max epochs: 35
+Total epoch time:  1253.19 s
+__________________________________________________
+Epoch 19:
+Learning rate:     0.001
+Training time:  1155.31 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *    1.8662   *    1.9067
+T-MAE     :    *    1.2813   *    1.2987
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :         3.8156        3.7213
+F-MAE     :    *    2.1978   *    2.2034
+F-RSQ     :        0.99399       0.99424
+T-Hier    :    *   0.50075   *   0.50007
+Error Loss:    *    9.1609   *    9.1301
+Loss      :    *    9.6649   *    9.6334
+Best T-RMSE so far:   1.9067
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 39
+Total epoch time:  1254.74 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 20:
+Learning rate:     0.001
+Training time:  1154.76 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         2.9923        2.9804
+T-MAE     :         2.4126         2.407
+T-RSQ     :        0.99998       0.99998
+F-RMSE    :         3.8964        3.7668
+F-MAE     :         2.2897         2.294
+F-RSQ     :        0.99372        0.9941
+T-Hier    :        0.52885       0.52863
+Error Loss:         11.591        11.448
+Loss      :         12.123         11.98
+Best T-RMSE so far:   1.9067
+Epochs since last best: 1
+Current max epochs: 39
+Total epoch time:  1250.79 s
+__________________________________________________
+Epoch 21:
+Learning rate:     0.001
+Training time:  1155.27 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *    1.8162   *    1.8778
+T-MAE     :    *    1.2472   *    1.2766
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :    *    3.4289   *    3.4676
+F-MAE     :    *    2.1436   *    2.1506
+F-RSQ     :        0.99512         0.995
+T-Hier    :    *     0.498   *   0.49714
+Error Loss:    *    8.6359   *    8.7726
+Loss      :    *    9.1373   *    9.2732
+Best T-RMSE so far:   1.8778
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 41
+Total epoch time:  1250.41 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 22:
+Learning rate:     0.001
+Training time:  1155.85 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         2.6194         2.663
+T-MAE     :         2.0139        2.0404
+T-RSQ     :        0.99998       0.99998
+F-RMSE    :         3.4819        3.7473
+F-MAE     :         2.1489         2.156
+F-RSQ     :        0.99498       0.99416
+T-Hier    :        0.51077       0.50968
+Error Loss:         10.264        10.607
+Loss      :         10.778         11.12
+Best T-RMSE so far:   1.8778
+Epochs since last best: 1
+Current max epochs: 41
+Total epoch time:  1252.86 s
+__________________________________________________
+Epoch 23:
+Learning rate:     0.001
+Training time:  1154.99 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :          1.829   *    1.8557
+T-MAE     :         1.3048        1.3122
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :         3.6193        3.6689
+F-MAE     :         2.2837        2.2895
+F-RSQ     :        0.99458       0.99441
+T-Hier    :        0.52897       0.52828
+Error Loss:         9.0367        9.1264
+Loss      :         9.5694        9.6584
+Best T-RMSE so far:   1.8557
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 43
+Total epoch time:  1256.71 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 24:
+Learning rate:     0.001
+Training time:  1155.83 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *    1.7592   *    1.7737
+T-MAE     :    *    1.2172   *    1.2223
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :    *    3.3684   *    3.4459
+F-MAE     :    *    2.1171   *    2.1221
+F-RSQ     :        0.99529       0.99506
+T-Hier    :    *   0.48982   *   0.48899
+Error Loss:    *     8.462   *     8.564
+Loss      :    *    8.9555   *    9.0567
+Best T-RMSE so far:   1.7737
+Epochs since last best: 0
+Current max epochs: 44
+Total epoch time:  1258.42 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 25:
+Learning rate:     0.001
+Training time:  1156.16 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         3.0407        3.0642
+T-MAE     :         2.4261        2.4521
+T-RSQ     :        0.99998       0.99998
+F-RMSE    :    *    3.3003   *    3.4456
+F-MAE     :    *    2.0934   *    2.1011
+F-RSQ     :        0.99548       0.99507
+T-Hier    :    *   0.48785   *   0.48799
+Error Loss:          10.86        11.063
+Loss      :         11.352        11.555
+Best T-RMSE so far:   1.7737
+Epochs since last best: 1
+Current max epochs: 44
+Total epoch time:  1254.93 s
+__________________________________________________
+Epoch 26:
+Learning rate:     0.001
+Training time:  1154.09 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         2.0136        2.0542
+T-MAE     :         1.4411         1.466
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :         3.4434        3.4622
+F-MAE     :         2.1606        2.1654
+F-RSQ     :        0.99508       0.99502
+T-Hier    :    *   0.48035   *   0.47979
+Error Loss:         9.0588        9.1478
+Loss      :          9.543        9.6314
+Best T-RMSE so far:   1.7737
+Epochs since last best: 2
+Current max epochs: 44
+Total epoch time:  1255.32 s
+__________________________________________________
+Epoch 27:
+Learning rate:     0.001
+Training time:  1155.87 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :          1.862        1.9135
+T-MAE     :         1.2731        1.2933
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :         3.8859        4.0366
+F-MAE     :         2.4236        2.4285
+F-RSQ     :        0.99374       0.99323
+T-Hier    :        0.51414       0.51477
+Error Loss:         9.4447        9.6719
+Loss      :         9.9628        10.191
+Best T-RMSE so far:   1.7737
+Epochs since last best: 3
+Current max epochs: 44
+Total epoch time:  1255.55 s
+__________________________________________________
+Epoch 28:
+Learning rate:     0.001
+Training time:  1155.76 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         2.1744        2.2262
+T-MAE     :         1.5651        1.5922
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :    *    3.2563   *    3.2935
+F-MAE     :    *    2.0647   *    2.0735
+F-RSQ     :        0.99561       0.99549
+T-Hier    :    *   0.46042   *   0.46011
+Error Loss:         9.0605        9.1854
+Loss      :          9.525        9.6496
+Best T-RMSE so far:   1.7737
+Epochs since last best: 4
+Current max epochs: 44
+Total epoch time:  1252.18 s
+__________________________________________________
+Epoch 29:
+Learning rate:     0.001
+Training time:  1155.78 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *    1.7079   *    1.7381
+T-MAE     :         1.2257        1.2357
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :    *    3.2321        3.3595
+F-MAE     :    *    2.0509   *    2.0593
+F-RSQ     :        0.99568       0.99531
+T-Hier    :        0.46873       0.46919
+Error Loss:    *    8.2167   *    8.3926
+Loss      :    *    8.6896   *     8.866
+Best T-RMSE so far:   1.7381
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 49
+Total epoch time:  1254.16 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 30:
+Learning rate:     0.001
+Training time:  1155.35 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *    1.6969        1.7503
+T-MAE     :    *    1.1837   *     1.207
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :    *    3.2196        3.4207
+F-MAE     :    *    2.0484   *    2.0547
+F-RSQ     :        0.99569       0.99514
+T-Hier    :        0.48828       0.48785
+Error Loss:    *    8.1485        8.4326
+Loss      :    *    8.6411        8.9247
+Best T-RMSE so far:   1.7381
+Epochs since last best: 1
+Current max epochs: 49
+Total epoch time:  1255.83 s
+__________________________________________________
+Epoch 31:
+Learning rate:     0.001
+Training time:  1155.47 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *    1.6664   *    1.7345
+T-MAE     :    *    1.1373   *    1.1684
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :         3.2473   *     3.231
+F-MAE     :    *    2.0049   *    2.0123
+F-RSQ     :        0.99565       0.99566
+T-Hier    :        0.46268       0.46322
+Error Loss:    *    8.0558   *    8.1463
+Loss      :    *    8.5229   *    8.6138
+Best T-RMSE so far:   1.7345
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 51
+Total epoch time:  1257.69 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 32:
+Learning rate:     0.001
+Training time:  1156.77 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *    1.5852   *    1.6307
+T-MAE     :    *    1.1057   *    1.1184
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :    *    3.1101   *    3.1266
+F-MAE     :    *    1.9749   *    1.9821
+F-RSQ     :          0.996       0.99594
+T-Hier    :        0.46801       0.46685
+Error Loss:    *    7.7759   *    7.8578
+Loss      :    *    8.2484   *    8.3291
+Best T-RMSE so far:   1.6307
+Epochs since last best: 0
+Current max epochs: 52
+Total epoch time:  1260.49 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 33:
+Learning rate:     0.001
+Training time:  1156.11 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.7126        1.7439
+T-MAE     :         1.2246        1.2355
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :         3.1602        3.2127
+F-MAE     :         2.0102        2.0185
+F-RSQ     :        0.99587       0.99571
+T-Hier    :        0.46203       0.46077
+Error Loss:         8.1076        8.2106
+Loss      :         8.5742        8.6759
+Best T-RMSE so far:   1.6307
+Epochs since last best: 1
+Current max epochs: 52
+Total epoch time:  1257.05 s
+__________________________________________________
+Epoch 34:
+Learning rate:     0.001
+Training time:  1155.09 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         2.3082        2.3611
+T-MAE     :         1.7718        1.8021
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :    *    3.0648   *    3.0941
+F-MAE     :    *    1.9491   *    1.9574
+F-RSQ     :        0.99611       0.99602
+T-Hier    :        0.46762       0.46587
+Error Loss:          9.094        9.2147
+Loss      :         9.5662        9.6852
+Best T-RMSE so far:   1.6307
+Epochs since last best: 2
+Current max epochs: 52
+Total epoch time:  1257.73 s
+__________________________________________________
+Epoch 35:
+Learning rate:     0.001
+Training time:  1154.49 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.6947        1.7387
+T-MAE     :         1.1799        1.1928
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :         3.4002        3.5549
+F-MAE     :         2.1443        2.1495
+F-RSQ     :        0.99522       0.99475
+T-Hier    :        0.48792       0.48813
+Error Loss:          8.419        8.6359
+Loss      :         8.9117        9.1288
+Best T-RMSE so far:   1.6307
+Epochs since last best: 3
+Current max epochs: 52
+Total epoch time:  1254.79 s
+__________________________________________________
+Epoch 36:
+Learning rate:     0.001
+Training time:  1153.75 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         2.0919        2.1316
+T-MAE     :         1.5606        1.5894
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :         3.7745        3.1924
+F-MAE     :         2.0153        2.0197
+F-RSQ     :        0.99409       0.99576
+T-Hier    :        0.47333       0.47365
+Error Loss:         9.4422        8.9331
+Loss      :         9.9204        9.4116
+Best T-RMSE so far:   1.6307
+Epochs since last best: 4
+Current max epochs: 52
+Total epoch time:  1250.4 s
+__________________________________________________
+Epoch 37:
+Learning rate:     0.001
+Training time:  1153.63 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.6163        1.6535
+T-MAE     :         1.1405         1.151
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :         3.1297        3.1397
+F-MAE     :    *    1.9461   *    1.9533
+F-RSQ     :        0.99594        0.9959
+T-Hier    :        0.48006       0.47929
+Error Loss:         7.8326        7.8975
+Loss      :         8.3176        8.3817
+Best T-RMSE so far:   1.6307
+Epochs since last best: 5
+Current max epochs: 52
+Total epoch time:  1255.73 s
+__________________________________________________
+Epoch 38:
+Learning rate:     0.001
+Training time:  1154.29 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         2.1142        2.1231
+T-MAE     :         1.5996        1.5941
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :          3.094        3.1456
+F-MAE     :         1.9931        2.0017
+F-RSQ     :        0.99604       0.99589
+T-Hier    :        0.47676       0.47627
+Error Loss:         8.8009        8.8645
+Loss      :         9.2827        9.3458
+Best T-RMSE so far:   1.6307
+Epochs since last best: 6
+Current max epochs: 52
+Total epoch time:  1251.41 s
+__________________________________________________
+Epoch 39:
+Learning rate:     0.001
+Training time:  1152.96 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.6199        1.6626
+T-MAE     :          1.183        1.1908
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :    *    3.0492   *    3.0915
+F-MAE     :    *    1.9147   *    1.9243
+F-RSQ     :        0.99614       0.99603
+T-Hier    :    *   0.45855   *   0.45826
+Error Loss:    *    7.7668        7.8692
+Loss      :    *    8.2304        8.3325
+Best T-RMSE so far:   1.6307
+Epochs since last best: 7
+Current max epochs: 52
+Total epoch time:  1250.22 s
+__________________________________________________
+Epoch 40:
+Learning rate:     0.001
+Training time:  1153.89 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *    1.4659   *    1.5324
+T-MAE     :    *   0.99326   *    1.0153
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :    *     3.011   *    3.0629
+F-MAE     :    *    1.9073   *    1.9143
+F-RSQ     :        0.99625        0.9961
+T-Hier    :        0.46926       0.46972
+Error Loss:    *    7.3775   *    7.5249
+Loss      :    *     7.852   *    7.9998
+Best T-RMSE so far:   1.5324
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 60
+Total epoch time:  1249.99 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 41:
+Learning rate:     0.001
+Training time:  1154.33 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :          1.587         1.612
+T-MAE     :         1.0998        1.1166
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :         3.0543        3.0779
+F-MAE     :         1.9222        1.9281
+F-RSQ     :        0.99614       0.99606
+T-Hier    :        0.45887        0.4588
+Error Loss:         7.6633        7.7345
+Loss      :         8.1275        8.1986
+Best T-RMSE so far:   1.5324
+Epochs since last best: 1
+Current max epochs: 60
+Total epoch time:  1250.55 s
+__________________________________________________
+Epoch 42:
+Learning rate:     0.001
+Training time:  1153.67 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :          1.532        1.5927
+T-MAE     :         1.0475        1.0695
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :         3.0336        3.0691
+F-MAE     :         1.9104          1.92
+F-RSQ     :         0.9962       0.99609
+T-Hier    :        0.46276       0.46354
+Error Loss:         7.5236        7.6514
+Loss      :         7.9917        8.1202
+Best T-RMSE so far:   1.5324
+Epochs since last best: 2
+Current max epochs: 60
+Total epoch time:  1249.85 s
+__________________________________________________
+Epoch 43:
+Learning rate:     0.001
+Training time:  1153.14 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *    1.4515   *    1.4894
+T-MAE     :        0.99434   *    1.0062
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :         3.1833   *    3.0226
+F-MAE     :    *    1.8716   *    1.8774
+F-RSQ     :         0.9958        0.9962
+T-Hier    :    *   0.45395   *   0.45419
+Error Loss:         7.5007   *    7.3956
+Loss      :         7.9601   *    7.8552
+Best T-RMSE so far:   1.4894
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 63
+Total epoch time:  1249.49 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 44:
+Learning rate:     0.001
+Training time:  1153.88 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.4786        1.5362
+T-MAE     :         1.0299        1.0506
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :    *    2.9269   *    2.9617
+F-MAE     :    *    1.8676   *    1.8744
+F-RSQ     :        0.99645       0.99635
+T-Hier    :        0.45934       0.46008
+Error Loss:    *     7.303         7.423
+Loss      :    *    7.7678        7.8885
+Best T-RMSE so far:   1.4894
+Epochs since last best: 1
+Current max epochs: 63
+Total epoch time:  1249.5 s
+__________________________________________________
+Epoch 45:
+Learning rate:     0.001
+Training time:  1154.36 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.5116        1.5632
+T-MAE     :         1.0303        1.0465
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :    *    2.8829   *     2.928
+F-MAE     :    *    1.8513   *    1.8608
+F-RSQ     :        0.99657       0.99644
+T-Hier    :    *   0.44714   *   0.44688
+Error Loss:    *    7.2761        7.3984
+Loss      :    *    7.7288   *    7.8509
+Best T-RMSE so far:   1.4894
+Epochs since last best: 2
+Current max epochs: 63
+Total epoch time:  1252.49 s
+__________________________________________________
+Epoch 46:
+Learning rate:     0.001
+Training time:  1152.98 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         2.6596        2.7144
+T-MAE     :         2.1852        2.2148
+T-RSQ     :        0.99998       0.99998
+F-RMSE    :         2.9709        3.0163
+F-MAE     :         1.8933        1.9011
+F-RSQ     :        0.99635       0.99622
+T-Hier    :        0.45046       0.45047
+Error Loss:         9.7091        9.8467
+Loss      :         10.165        10.303
+Best T-RMSE so far:   1.4894
+Epochs since last best: 3
+Current max epochs: 63
+Total epoch time:  1247.92 s
+__________________________________________________
+Epoch 47:
+Learning rate:     0.001
+Training time:  1154.98 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.4758        1.5357
+T-MAE     :         1.0285        1.0547
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :         2.8953        2.9339
+F-MAE     :    *    1.8397   *    1.8488
+F-RSQ     :        0.99652       0.99642
+T-Hier    :    *   0.44653   *   0.44641
+Error Loss:    *    7.2394   *    7.3731
+Loss      :    *    7.6916   *    7.8252
+Best T-RMSE so far:   1.4894
+Epochs since last best: 4
+Current max epochs: 63
+Total epoch time:  1259.01 s
+__________________________________________________
+Epoch 48:
+Learning rate:     0.001
+Training time:  1153.67 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.8625        1.9218
+T-MAE     :         1.3699        1.3961
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :    *    2.8759   *    2.9057
+F-MAE     :    *     1.828   *    1.8363
+F-RSQ     :        0.99657       0.99649
+T-Hier    :          0.448       0.44697
+Error Loss:         7.9363        8.0598
+Loss      :         8.3901        8.5125
+Best T-RMSE so far:   1.4894
+Epochs since last best: 5
+Current max epochs: 63
+Total epoch time:  1250.89 s
+__________________________________________________
+Epoch 49:
+Learning rate:     0.001
+Training time:  1154.34 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.7091        1.7763
+T-MAE     :         1.2245        1.2535
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :         2.9704        2.9382
+F-MAE     :          1.847        1.8549
+F-RSQ     :        0.99635       0.99641
+T-Hier    :        0.45364       0.45449
+Error Loss:         7.7509        7.8229
+Loss      :         8.2104        8.2832
+Best T-RMSE so far:   1.4894
+Epochs since last best: 6
+Current max epochs: 63
+Total epoch time:  1255.1 s
+__________________________________________________
+Epoch 50:
+Learning rate:     0.001
+Training time:  1155.06 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.5261        1.5691
+T-MAE     :         1.0298        1.0429
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :         2.8814        2.9207
+F-MAE     :          1.835        1.8427
+F-RSQ     :        0.99656       0.99645
+T-Hier    :        0.45051       0.45017
+Error Loss:         7.2723        7.3754
+Loss      :         7.7287        7.8315
+Best T-RMSE so far:   1.4894
+Epochs since last best: 7
+Current max epochs: 63
+Total epoch time:  1257.24 s
+__________________________________________________
+Epoch 51:
+Learning rate:     0.001
+Training time:  1155.67 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         2.0064        2.0406
+T-MAE     :         1.4363        1.4503
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :          3.911        3.6957
+F-MAE     :         2.0562        2.0604
+F-RSQ     :         0.9937       0.99432
+T-Hier    :        0.47744        0.4772
+Error Loss:         9.4099         9.247
+Loss      :         9.8933        9.7301
+Best T-RMSE so far:   1.4894
+Epochs since last best: 8
+Current max epochs: 63
+Total epoch time:  1258.76 s
+__________________________________________________
+Epoch 52:
+Learning rate:     0.001
+Training time:  1154.69 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.6129        1.6749
+T-MAE     :         1.1427         1.169
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :         2.9829        3.0314
+F-MAE     :         1.8518        1.8591
+F-RSQ     :         0.9963       0.99618
+T-Hier    :        0.46502       0.46386
+Error Loss:         7.5903        7.7344
+Loss      :         8.0614        8.2044
+Best T-RMSE so far:   1.4894
+Epochs since last best: 9
+Current max epochs: 63
+Total epoch time:  1254.48 s
+__________________________________________________
+Epoch 53:
+Learning rate:     0.001
+Training time:  1155.61 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.5307        1.5728
+T-MAE     :         1.0464        1.0626
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :          2.883        2.9254
+F-MAE     :         1.8312        1.8376
+F-RSQ     :        0.99654       0.99644
+T-Hier    :        0.45727       0.45674
+Error Loss:         7.2913        7.3985
+Loss      :         7.7548        7.8614
+Best T-RMSE so far:   1.4894
+Epochs since last best: 10
+Current max epochs: 63
+Total epoch time:  1252.09 s
+__________________________________________________
+Epoch 54:
+Learning rate:     0.001
+Training time:  1154.26 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.5072        1.5622
+T-MAE     :         1.0293        1.0548
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :         2.8858        2.9219
+F-MAE     :    *    1.8271   *    1.8352
+F-RSQ     :        0.99656       0.99645
+T-Hier    :        0.45177        0.4518
+Error Loss:         7.2495         7.374
+Loss      :         7.7075        7.8321
+Best T-RMSE so far:   1.4894
+Epoch 00055: reducing learning rate of group 0 to 5.0000e-04.
+Epochs since last best: 11
+Current max epochs: 63
+Total epoch time:  1255.82 s
+__________________________________________________
+Epoch 55:
+Learning rate:    0.0005
+Training time:  1152.8 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.5442        1.5637
+T-MAE     :         1.1374        1.1432
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :    *    2.7123   *    2.7561
+F-MAE     :    *    1.7292   *     1.741
+F-RSQ     :        0.99695       0.99684
+T-Hier    :    *   0.43993   *   0.44094
+Error Loss:    *    7.1231   *     7.204
+Loss      :    *    7.5693   *    7.6512
+Best T-RMSE so far:   1.4894
+Epochs since last best: 12
+Current max epochs: 63
+Total epoch time:  1250.0 s
+__________________________________________________
+Epoch 56:
+Learning rate:    0.0005
+Training time:  1152.51 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *     1.383   *     1.442
+T-MAE     :    *   0.98456   *    1.0044
+T-RSQ     :              1       0.99999
+F-RMSE    :    *    2.6849   *    2.7332
+F-MAE     :    *    1.7224   *    1.7337
+F-RSQ     :        0.99701        0.9969
+T-Hier    :        0.45996       0.46018
+Error Loss:    *    6.7748   *    6.9133
+Loss      :    *     7.241   *    7.3797
+Best T-RMSE so far:    1.442
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 76
+Total epoch time:  1248.97 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 57:
+Learning rate:    0.0005
+Training time:  1153.92 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *    1.2601   *    1.3306
+T-MAE     :    *   0.85478   *   0.87842
+T-RSQ     :              1             1
+F-RMSE    :    *    2.6225   *    2.6829
+F-MAE     :    *    1.6848   *    1.6984
+F-RSQ     :        0.99715       0.99701
+T-Hier    :    *   0.43532   *   0.43543
+Error Loss:    *    6.4221   *    6.5903
+Loss      :    *    6.8637   *     7.032
+Best T-RMSE so far:   1.3306
+Epochs since last best: 0
+Current max epochs: 77
+Total epoch time:  1258.33 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 58:
+Learning rate:    0.0005
+Training time:  1154.27 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.3019        1.3776
+T-MAE     :        0.89485       0.92091
+T-RSQ     :              1             1
+F-RMSE    :         2.6287        2.6846
+F-MAE     :    *    1.6838   *    1.6944
+F-RSQ     :        0.99714         0.997
+T-Hier    :        0.44232       0.44197
+Error Loss:         6.5093        6.6774
+Loss      :         6.9579        7.1256
+Best T-RMSE so far:   1.3306
+Epochs since last best: 1
+Current max epochs: 77
+Total epoch time:  1250.74 s
+__________________________________________________
+Epoch 59:
+Learning rate:    0.0005
+Training time:  1153.17 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.2611   *    1.3298
+T-MAE     :        0.87107       0.89543
+T-RSQ     :              1             1
+F-RMSE    :         2.6234   *    2.6717
+F-MAE     :    *    1.6754   *    1.6856
+F-RSQ     :        0.99715       0.99703
+T-Hier    :        0.43731       0.43744
+Error Loss:          6.431   *    6.5825
+Loss      :         6.8745   *    7.0262
+Best T-RMSE so far:   1.3298
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 79
+Total epoch time:  1256.44 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 60:
+Learning rate:    0.0005
+Training time:  1155.74 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.5335        1.6164
+T-MAE     :         1.1269        1.1631
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :    *    2.6148   *    2.6641
+F-MAE     :    *    1.6605   *    1.6729
+F-RSQ     :        0.99717       0.99705
+T-Hier    :        0.43595       0.43568
+Error Loss:         6.9357        7.1165
+Loss      :         7.3779        7.5585
+Best T-RMSE so far:   1.3298
+Epochs since last best: 1
+Current max epochs: 79
+Total epoch time:  1256.57 s
+__________________________________________________
+Epoch 61:
+Learning rate:    0.0005
+Training time:  1154.49 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.2823        1.3464
+T-MAE     :         0.8882       0.91368
+T-RSQ     :              1             1
+F-RMSE    :         2.6328        2.6798
+F-MAE     :         1.6736        1.6863
+F-RSQ     :        0.99713       0.99702
+T-Hier    :        0.43751       0.43811
+Error Loss:         6.4769        6.6261
+Loss      :         6.9206        7.0705
+Best T-RMSE so far:   1.3298
+Epochs since last best: 2
+Current max epochs: 79
+Total epoch time:  1255.57 s
+__________________________________________________
+Epoch 62:
+Learning rate:    0.0005
+Training time:  1154.79 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :          1.331        1.4054
+T-MAE     :        0.93633       0.96164
+T-RSQ     :              1             1
+F-RMSE    :          2.621        2.6674
+F-MAE     :         1.6663        1.6759
+F-RSQ     :        0.99717       0.99704
+T-Hier    :        0.43554   *   0.43497
+Error Loss:         6.5547        6.7103
+Loss      :         6.9965        7.1516
+Best T-RMSE so far:   1.3298
+Epochs since last best: 3
+Current max epochs: 79
+Total epoch time:  1255.92 s
+__________________________________________________
+Epoch 63:
+Learning rate:    0.0005
+Training time:  1154.13 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.2978        1.3566
+T-MAE     :        0.87725       0.90498
+T-RSQ     :              1             1
+F-RMSE    :    *    2.5786   *    2.6283
+F-MAE     :    *     1.649   *    1.6599
+F-RSQ     :        0.99725       0.99713
+T-Hier    :        0.43966       0.43925
+Error Loss:    *    6.4028   *    6.5497
+Loss      :    *    6.8487   *    6.9952
+Best T-RMSE so far:   1.3298
+Epochs since last best: 4
+Current max epochs: 79
+Total epoch time:  1250.17 s
+__________________________________________________
+Epoch 64:
+Learning rate:    0.0005
+Training time:  1154.79 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :          1.287        1.3634
+T-MAE     :        0.87949       0.91055
+T-RSQ     :              1             1
+F-RMSE    :         2.5789        2.6312
+F-MAE     :    *    1.6481   *    1.6585
+F-RSQ     :        0.99725       0.99712
+T-Hier    :         0.4364       0.43634
+Error Loss:    *    6.3935        6.5636
+Loss      :    *    6.8362        7.0063
+Best T-RMSE so far:   1.3298
+Epochs since last best: 5
+Current max epochs: 79
+Total epoch time:  1257.71 s
+__________________________________________________
+Epoch 65:
+Learning rate:    0.0005
+Training time:  1154.49 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.3879        1.4355
+T-MAE     :         1.0116        1.0215
+T-RSQ     :              1       0.99999
+F-RMSE    :         2.5863        2.6383
+F-MAE     :         1.6638        1.6751
+F-RSQ     :        0.99723       0.99711
+T-Hier    :    *   0.43226   *   0.43185
+Error Loss:         6.6497        6.7703
+Loss      :         7.0882        7.2085
+Best T-RMSE so far:   1.3298
+Epochs since last best: 6
+Current max epochs: 79
+Total epoch time:  1251.65 s
+__________________________________________________
+Epoch 66:
+Learning rate:    0.0005
+Training time:  1155.19 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.3451        1.4219
+T-MAE     :        0.96014       0.99241
+T-RSQ     :              1       0.99999
+F-RMSE    :    *    2.5778        2.6353
+F-MAE     :    *     1.643   *    1.6546
+F-RSQ     :        0.99724       0.99711
+T-Hier    :        0.45631       0.45652
+Error Loss:         6.5261        6.7041
+Loss      :         6.9887         7.167
+Best T-RMSE so far:   1.3298
+Epochs since last best: 7
+Current max epochs: 79
+Total epoch time:  1260.0 s
+__________________________________________________
+Epoch 67:
+Learning rate:    0.0005
+Training time:  1154.26 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *     1.241   *    1.3219
+T-MAE     :        0.86612       0.89534
+T-RSQ     :              1             1
+F-RMSE    :    *    2.5525   *    2.6067
+F-MAE     :    *    1.6281   *    1.6395
+F-RSQ     :        0.99732       0.99718
+T-Hier    :        0.44009       0.44005
+Error Loss:    *    6.2876   *    6.4634
+Loss      :    *    6.7341   *    6.9098
+Best T-RMSE so far:   1.3219
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 87
+Total epoch time:  1256.22 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 68:
+Learning rate:    0.0005
+Training time:  1154.46 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.4177        1.4967
+T-MAE     :         1.0119        1.0453
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :         2.5576        2.6204
+F-MAE     :    *    1.6276   *     1.639
+F-RSQ     :        0.99729       0.99715
+T-Hier    :        0.43532       0.43621
+Error Loss:         6.6148        6.8014
+Loss      :         7.0565        7.2439
+Best T-RMSE so far:   1.3219
+Epochs since last best: 1
+Current max epochs: 87
+Total epoch time:  1253.34 s
+__________________________________________________
+Epoch 69:
+Learning rate:    0.0005
+Training time:  1154.36 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.2444   *    1.3059
+T-MAE     :    *   0.85322   *   0.87504
+T-RSQ     :              1             1
+F-RMSE    :    *    2.5451   *    2.6038
+F-MAE     :         1.6283   *    1.6388
+F-RSQ     :        0.99731       0.99718
+T-Hier    :        0.43658       0.43649
+Error Loss:    *    6.2711   *    6.4236
+Loss      :    *     6.714   *    6.8665
+Best T-RMSE so far:   1.3059
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 89
+Total epoch time:  1258.95 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 70:
+Learning rate:    0.0005
+Training time:  1155.78 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.3138        1.3976
+T-MAE     :        0.91393       0.95224
+T-RSQ     :              1             1
+F-RMSE    :         2.5544        2.6046
+F-MAE     :    *    1.6272        1.6399
+F-RSQ     :        0.99729       0.99718
+T-Hier    :        0.43835       0.43872
+Error Loss:         6.4093        6.5944
+Loss      :         6.8541        7.0395
+Best T-RMSE so far:   1.3059
+Epochs since last best: 1
+Current max epochs: 89
+Total epoch time:  1260.11 s
+__________________________________________________
+Epoch 71:
+Learning rate:    0.0005
+Training time:  1155.3 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.3554        1.4099
+T-MAE     :        0.94437       0.98051
+T-RSQ     :              1             1
+F-RMSE    :         2.5576   *    2.6005
+F-MAE     :         1.6317        1.6418
+F-RSQ     :         0.9973       0.99719
+T-Hier    :        0.43649       0.43702
+Error Loss:         6.4891        6.6328
+Loss      :          6.932        7.0762
+Best T-RMSE so far:   1.3059
+Epochs since last best: 2
+Current max epochs: 89
+Total epoch time:  1256.01 s
+__________________________________________________
+Epoch 72:
+Learning rate:    0.0005
+Training time:  1154.76 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.3187        1.3684
+T-MAE     :        0.95259       0.96297
+T-RSQ     :              1             1
+F-RMSE    :          2.547        2.6007
+F-MAE     :    *     1.617   *    1.6277
+F-RSQ     :        0.99731       0.99719
+T-Hier    :        0.43716       0.43776
+Error Loss:         6.4352        6.5597
+Loss      :         6.8788        7.0039
+Best T-RMSE so far:   1.3059
+Epochs since last best: 3
+Current max epochs: 89
+Total epoch time:  1255.46 s
+__________________________________________________
+Epoch 73:
+Learning rate:    0.0005
+Training time:  1153.52 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.5763        1.6114
+T-MAE     :         1.2095        1.2134
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :    *     2.529   *    2.5961
+F-MAE     :         1.6224        1.6349
+F-RSQ     :        0.99734        0.9972
+T-Hier    :         0.4379        0.4385
+Error Loss:         6.9371        7.0557
+Loss      :         7.3815        7.5007
+Best T-RMSE so far:   1.3059
+Epochs since last best: 4
+Current max epochs: 89
+Total epoch time:  1249.38 s
+__________________________________________________
+Epoch 74:
+Learning rate:    0.0005
+Training time:  1153.73 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.4152        1.4582
+T-MAE     :         1.0414         1.049
+T-RSQ     :              1       0.99999
+F-RMSE    :         2.5306   *    2.5812
+F-MAE     :    *    1.6141   *    1.6259
+F-RSQ     :        0.99735       0.99723
+T-Hier    :        0.44516       0.44561
+Error Loss:         6.6013        6.7143
+Loss      :         7.0529        7.1664
+Best T-RMSE so far:   1.3059
+Epochs since last best: 5
+Current max epochs: 89
+Total epoch time:  1252.87 s
+__________________________________________________
+Epoch 75:
+Learning rate:    0.0005
+Training time:  1152.28 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.3092        1.3616
+T-MAE     :        0.93305       0.94521
+T-RSQ     :              1             1
+F-RMSE    :    *    2.5098   *    2.5648
+F-MAE     :    *     1.603   *    1.6142
+F-RSQ     :        0.99739       0.99727
+T-Hier    :    *   0.43218       0.43254
+Error Loss:          6.355        6.4858
+Loss      :         6.7936        6.9248
+Best T-RMSE so far:   1.3059
+Epochs since last best: 6
+Current max epochs: 89
+Total epoch time:  1249.54 s
+__________________________________________________
+Epoch 76:
+Learning rate:    0.0005
+Training time:  1152.93 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.2602        1.3392
+T-MAE     :        0.87432       0.90804
+T-RSQ     :              1             1
+F-RMSE    :         2.5124        2.5695
+F-MAE     :         1.6061        1.6177
+F-RSQ     :        0.99738       0.99726
+T-Hier    :        0.43728       0.43779
+Error Loss:    *     6.253        6.4345
+Loss      :    *    6.6967        6.8788
+Best T-RMSE so far:   1.3059
+Epochs since last best: 7
+Current max epochs: 89
+Total epoch time:  1251.14 s
+__________________________________________________
+Epoch 77:
+Learning rate:    0.0005
+Training time:  1155.57 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.3094           1.4
+T-MAE     :        0.92007       0.95776
+T-RSQ     :              1             1
+F-RMSE    :         2.5147         2.572
+F-MAE     :         1.6051        1.6168
+F-RSQ     :        0.99739       0.99725
+T-Hier    :    *   0.43066   *   0.43096
+Error Loss:         6.3492        6.5465
+Loss      :         6.7864         6.984
+Best T-RMSE so far:   1.3059
+Epochs since last best: 8
+Current max epochs: 89
+Total epoch time:  1254.32 s
+__________________________________________________
+Epoch 78:
+Learning rate:    0.0005
+Training time:  1154.34 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *     1.216   *    1.2888
+T-MAE     :    *    0.8329   *   0.85833
+T-RSQ     :              1             1
+F-RMSE    :         2.5725        2.6388
+F-MAE     :         1.6136        1.6239
+F-RSQ     :        0.99726       0.99711
+T-Hier    :        0.44009       0.44005
+Error Loss:    *    6.2351   *    6.4099
+Loss      :    *    6.6817   *    6.8564
+Best T-RMSE so far:   1.2888
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 98
+Total epoch time:  1250.7 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 79:
+Learning rate:    0.0005
+Training time:  1154.79 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.5446        1.6198
+T-MAE     :         1.1368        1.1729
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :    *    2.4985   *    2.5579
+F-MAE     :    *    1.5966   *    1.6087
+F-RSQ     :        0.99741       0.99728
+T-Hier    :        0.43107       0.43109
+Error Loss:         6.7765        6.9592
+Loss      :         7.2141        7.3969
+Best T-RMSE so far:   1.2888
+Epochs since last best: 1
+Current max epochs: 98
+Total epoch time:  1253.28 s
+__________________________________________________
+Epoch 80:
+Learning rate:    0.0005
+Training time:  1154.92 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.3027        1.3761
+T-MAE     :        0.90174        0.9327
+T-RSQ     :              1             1
+F-RMSE    :         2.5223        2.5755
+F-MAE     :         1.5972   *     1.608
+F-RSQ     :        0.99737       0.99724
+T-Hier    :    *   0.42879   *   0.42872
+Error Loss:         6.3238        6.4924
+Loss      :         6.7592        6.9276
+Best T-RMSE so far:   1.2888
+Epochs since last best: 2
+Current max epochs: 98
+Total epoch time:  1251.45 s
+__________________________________________________
+Epoch 81:
+Learning rate:    0.0005
+Training time:  1154.42 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :           1.28        1.3597
+T-MAE     :        0.87343       0.91056
+T-RSQ     :              1             1
+F-RMSE    :         2.5031        2.5651
+F-MAE     :    *    1.5896   *    1.6031
+F-RSQ     :         0.9974       0.99727
+T-Hier    :        0.43258       0.43337
+Error Loss:         6.2461        6.4385
+Loss      :         6.6852        6.8784
+Best T-RMSE so far:   1.2888
+Epochs since last best: 3
+Current max epochs: 98
+Total epoch time:  1255.79 s
+__________________________________________________
+Epoch 82:
+Learning rate:    0.0005
+Training time:  1154.59 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :          1.244        1.3162
+T-MAE     :        0.90475       0.92784
+T-RSQ     :              1             1
+F-RMSE    :    *     2.482   *    2.5576
+F-MAE     :    *    1.5885   *    1.6001
+F-RSQ     :        0.99746       0.99728
+T-Hier    :        0.43305        0.4336
+Error Loss:    *    6.2193   *    6.4017
+Loss      :    *    6.6589   *    6.8418
+Best T-RMSE so far:   1.2888
+Epochs since last best: 4
+Current max epochs: 98
+Total epoch time:  1256.93 s
+__________________________________________________
+Epoch 83:
+Learning rate:    0.0005
+Training time:  1154.57 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.2267        1.3021
+T-MAE     :        0.85951       0.88065
+T-RSQ     :              1             1
+F-RMSE    :         2.4926        2.5632
+F-MAE     :         1.5949        1.6061
+F-RSQ     :        0.99742       0.99727
+T-Hier    :        0.43165       0.43245
+Error Loss:    *    6.1737   *     6.352
+Loss      :    *     6.612   *     6.791
+Best T-RMSE so far:   1.2888
+Epochs since last best: 5
+Current max epochs: 98
+Total epoch time:  1250.63 s
+__________________________________________________
+Epoch 84:
+Learning rate:    0.0005
+Training time:  1154.41 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.2665        1.3296
+T-MAE     :        0.91905       0.93659
+T-RSQ     :              1             1
+F-RMSE    :    *    2.4731   *    2.5392
+F-MAE     :    *    1.5777   *    1.5915
+F-RSQ     :        0.99746       0.99732
+T-Hier    :    *   0.42805   *   0.42838
+Error Loss:         6.2363        6.3969
+Loss      :          6.671        6.8319
+Best T-RMSE so far:   1.2888
+Epochs since last best: 6
+Current max epochs: 98
+Total epoch time:  1253.98 s
+__________________________________________________
+Epoch 85:
+Learning rate:    0.0005
+Training time:  1153.94 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *    1.2125   *    1.2732
+T-MAE     :    *    0.8195   *   0.84384
+T-RSQ     :              1             1
+F-RMSE    :         2.4942        2.5605
+F-MAE     :         1.5802        1.5929
+F-RSQ     :        0.99743       0.99727
+T-Hier    :        0.42922       0.42932
+Error Loss:    *    6.1063   *    6.2704
+Loss      :    *    6.5422   *    6.7064
+Best T-RMSE so far:   1.2732
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 105
+Total epoch time:  1253.05 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 86:
+Learning rate:    0.0005
+Training time:  1155.25 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :          1.244        1.3266
+T-MAE     :        0.86739       0.89659
+T-RSQ     :              1             1
+F-RMSE    :         2.5682        2.6256
+F-MAE     :         1.5945        1.6059
+F-RSQ     :        0.99728       0.99713
+T-Hier    :        0.43041        0.4316
+Error Loss:         6.2741        6.4547
+Loss      :         6.7111        6.8929
+Best T-RMSE so far:   1.2732
+Epochs since last best: 1
+Current max epochs: 105
+Total epoch time:  1254.13 s
+__________________________________________________
+Epoch 87:
+Learning rate:    0.0005
+Training time:  1154.45 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.3636        1.4477
+T-MAE     :        0.94985       0.98584
+T-RSQ     :              1       0.99999
+F-RMSE    :         2.4759   *    2.5352
+F-MAE     :         1.5806        1.5918
+F-RSQ     :        0.99746       0.99733
+T-Hier    :        0.43306       0.43301
+Error Loss:           6.37        6.5605
+Loss      :         6.8097        7.0001
+Best T-RMSE so far:   1.2732
+Epochs since last best: 2
+Current max epochs: 105
+Total epoch time:  1251.99 s
+__________________________________________________
+Epoch 88:
+Learning rate:    0.0005
+Training time:  1155.35 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *    1.1819   *    1.2654
+T-MAE     :         0.8276       0.85404
+T-RSQ     :              1             1
+F-RMSE    :    *    2.4665   *    2.5319
+F-MAE     :    *    1.5757   *    1.5897
+F-RSQ     :        0.99749       0.99734
+T-Hier    :        0.43266       0.43361
+Error Loss:    *    6.0517   *     6.241
+Loss      :    *    6.4911   *    6.6813
+Best T-RMSE so far:   1.2654
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 108
+Total epoch time:  1253.74 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 89:
+Learning rate:    0.0005
+Training time:  1153.56 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.3079        1.3984
+T-MAE     :        0.92915       0.96523
+T-RSQ     :              1             1
+F-RMSE    :          2.473        2.5347
+F-MAE     :          1.582        1.5936
+F-RSQ     :        0.99747       0.99733
+T-Hier    :        0.42841   *   0.42826
+Error Loss:          6.292        6.4919
+Loss      :         6.7271        6.9269
+Best T-RMSE so far:   1.2654
+Epochs since last best: 1
+Current max epochs: 108
+Total epoch time:  1255.65 s
+__________________________________________________
+Epoch 90:
+Learning rate:    0.0005
+Training time:  1153.59 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.2966        1.3601
+T-MAE     :        0.93395       0.94948
+T-RSQ     :              1             1
+F-RMSE    :         2.4719        2.5358
+F-MAE     :         1.5769   *    1.5892
+F-RSQ     :        0.99747       0.99733
+T-Hier    :        0.43241       0.43304
+Error Loss:         6.2793        6.4346
+Loss      :         6.7184        6.8743
+Best T-RMSE so far:   1.2654
+Epochs since last best: 2
+Current max epochs: 108
+Total epoch time:  1253.23 s
+__________________________________________________
+Epoch 91:
+Learning rate:    0.0005
+Training time:  1155.72 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.2764        1.3393
+T-MAE     :        0.92163       0.93981
+T-RSQ     :              1             1
+F-RMSE    :    *    2.4564   *    2.5154
+F-MAE     :    *    1.5677   *    1.5787
+F-RSQ     :        0.99751       0.99737
+T-Hier    :    *   0.42634   *   0.42745
+Error Loss:         6.2223        6.3732
+Loss      :         6.6553        6.8074
+Best T-RMSE so far:   1.2654
+Epochs since last best: 3
+Current max epochs: 108
+Total epoch time:  1254.71 s
+__________________________________________________
+Epoch 92:
+Learning rate:    0.0005
+Training time:  1154.74 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :          1.256        1.2938
+T-MAE     :        0.86689       0.88406
+T-RSQ     :              1             1
+F-RMSE    :         2.4912        2.5384
+F-MAE     :         1.5681        1.5827
+F-RSQ     :        0.99743       0.99732
+T-Hier    :         0.4273       0.42752
+Error Loss:         6.1822        6.2991
+Loss      :         6.6162        6.7333
+Best T-RMSE so far:   1.2654
+Epochs since last best: 4
+Current max epochs: 108
+Total epoch time:  1253.96 s
+__________________________________________________
+Epoch 93:
+Learning rate:    0.0005
+Training time:  1152.06 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.2772        1.3216
+T-MAE     :        0.90695       0.92184
+T-RSQ     :              1             1
+F-RMSE    :         2.4795        2.5387
+F-MAE     :         1.5815        1.5924
+F-RSQ     :        0.99746       0.99732
+T-Hier    :        0.42872       0.42955
+Error Loss:         6.2451        6.3746
+Loss      :         6.6806        6.8109
+Best T-RMSE so far:   1.2654
+Epochs since last best: 5
+Current max epochs: 108
+Total epoch time:  1250.42 s
+__________________________________________________
+Epoch 94:
+Learning rate:    0.0005
+Training time:  1153.51 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.3755        1.4691
+T-MAE     :         0.9841        1.0252
+T-RSQ     :              1       0.99999
+F-RMSE    :    *    2.4426   *    2.5097
+F-MAE     :    *    1.5655   *    1.5783
+F-RSQ     :        0.99753       0.99738
+T-Hier    :    *   0.42421   *   0.42525
+Error Loss:         6.3678        6.5823
+Loss      :         6.7988        7.0143
+Best T-RMSE so far:   1.2654
+Epochs since last best: 6
+Current max epochs: 108
+Total epoch time:  1254.04 s
+__________________________________________________
+Epoch 95:
+Learning rate:    0.0005
+Training time:  1153.46 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *    1.1769   *     1.256
+T-MAE     :    *   0.80621   *   0.83084
+T-RSQ     :              1             1
+F-RMSE    :         2.5094        2.5847
+F-MAE     :         1.5658        1.5783
+F-RSQ     :        0.99739       0.99722
+T-Hier    :        0.42865       0.42869
+Error Loss:         6.0583        6.2499
+Loss      :         6.4937        6.6853
+Best T-RMSE so far:    1.256
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 115
+Total epoch time:  1256.02 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 96:
+Learning rate:    0.0005
+Training time:  1154.79 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.2333        1.2776
+T-MAE     :        0.81903       0.84759
+T-RSQ     :              1             1
+F-RMSE    :         2.9367        2.5439
+F-MAE     :         1.5796        1.5909
+F-RSQ     :        0.99643       0.99731
+T-Hier    :        0.43067       0.43168
+Error Loss:         6.5687          6.26
+Loss      :         7.0061        6.6985
+Best T-RMSE so far:    1.256
+Epochs since last best: 1
+Current max epochs: 115
+Total epoch time:  1255.63 s
+__________________________________________________
+Epoch 97:
+Learning rate:    0.0005
+Training time:  1151.84 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.1931        1.2713
+T-MAE     :        0.83947       0.86791
+T-RSQ     :              1             1
+F-RMSE    :         2.4547        2.5231
+F-MAE     :         1.5682        1.5817
+F-RSQ     :         0.9975       0.99735
+T-Hier    :        0.43428       0.43503
+Error Loss:         6.0555         6.244
+Loss      :         6.4966        6.6858
+Best T-RMSE so far:    1.256
+Epochs since last best: 2
+Current max epochs: 115
+Total epoch time:  1253.48 s
+__________________________________________________
+Epoch 98:
+Learning rate:    0.0005
+Training time:  1153.8 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.3491        1.4088
+T-MAE     :         1.0074        1.0228
+T-RSQ     :              1             1
+F-RMSE    :         2.4487        2.5182
+F-MAE     :    *    1.5632   *     1.576
+F-RSQ     :        0.99752       0.99736
+T-Hier    :        0.44071       0.44218
+Error Loss:         6.3684        6.5258
+Loss      :          6.816        6.9748
+Best T-RMSE so far:    1.256
+Epochs since last best: 3
+Current max epochs: 115
+Total epoch time:  1250.29 s
+__________________________________________________
+Epoch 99:
+Learning rate:    0.0005
+Training time:  1155.23 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.2362        1.2881
+T-MAE     :         0.8399       0.86452
+T-RSQ     :              1             1
+F-RMSE    :         2.4753        2.5323
+F-MAE     :         1.5696        1.5828
+F-RSQ     :        0.99747       0.99733
+T-Hier    :        0.42813       0.42844
+Error Loss:          6.121        6.2677
+Loss      :          6.556         6.703
+Best T-RMSE so far:    1.256
+Epochs since last best: 4
+Current max epochs: 115
+Total epoch time:  1256.97 s
+__________________________________________________
+Epoch 100:
+Learning rate:    0.0005
+Training time:  1152.08 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.2009         1.289
+T-MAE     :        0.81309       0.84933
+T-RSQ     :              1             1
+F-RMSE    :    *    2.4256   *    2.4836
+F-MAE     :    *    1.5507   *    1.5628
+F-RSQ     :        0.99757       0.99744
+T-Hier    :        0.43218       0.43313
+Error Loss:    *    5.9904   *    6.1847
+Loss      :    *    6.4294   *    6.6247
+Best T-RMSE so far:    1.256
+Epochs since last best: 5
+Current max epochs: 115
+Total epoch time:  1250.42 s
+__________________________________________________
+Epoch 101:
+Learning rate:    0.0005
+Training time:  1154.74 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.2194        1.3071
+T-MAE     :        0.86682       0.89581
+T-RSQ     :              1             1
+F-RMSE    :         2.4287        2.4996
+F-MAE     :    *    1.5505        1.5632
+F-RSQ     :        0.99755        0.9974
+T-Hier    :        0.42687       0.42756
+Error Loss:         6.0654        6.2658
+Loss      :         6.4992        6.7002
+Best T-RMSE so far:    1.256
+Epochs since last best: 6
+Current max epochs: 115
+Total epoch time:  1254.05 s
+__________________________________________________
+Epoch 102:
+Learning rate:    0.0005
+Training time:  1152.01 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.2266        1.3096
+T-MAE     :        0.86489       0.89743
+T-RSQ     :              1             1
+F-RMSE    :           2.47        2.5388
+F-MAE     :         1.5739        1.5877
+F-RSQ     :        0.99747       0.99732
+T-Hier    :        0.45969       0.45943
+Error Loss:         6.1354        6.3335
+Loss      :          6.602        6.7998
+Best T-RMSE so far:    1.256
+Epochs since last best: 7
+Current max epochs: 115
+Total epoch time:  1251.02 s
+__________________________________________________
+Epoch 103:
+Learning rate:    0.0005
+Training time:  1150.35 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *    1.1767        1.2611
+T-MAE     :        0.82333       0.84775
+T-RSQ     :              1             1
+F-RMSE    :         2.4404        2.5158
+F-MAE     :         1.5546        1.5688
+F-RSQ     :        0.99753       0.99737
+T-Hier    :    *   0.42144   *   0.42245
+Error Loss:          5.995        6.1934
+Loss      :    *    6.4234   *    6.6228
+Best T-RMSE so far:    1.256
+Epochs since last best: 8
+Current max epochs: 115
+Total epoch time:  1254.81 s
+__________________________________________________
+Epoch 104:
+Learning rate:    0.0005
+Training time:  1154.15 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.4531        1.4865
+T-MAE     :        0.96616       0.99616
+T-RSQ     :        0.99999       0.99999
+F-RMSE    :         2.6492        2.6642
+F-MAE     :         1.6293        1.6381
+F-RSQ     :        0.99708       0.99705
+T-Hier    :        0.43664       0.43704
+Error Loss:         6.6978        6.7851
+Loss      :         7.1414         7.229
+Best T-RMSE so far:    1.256
+Epochs since last best: 9
+Current max epochs: 115
+Total epoch time:  1257.55 s
+__________________________________________________
+Epoch 105:
+Learning rate:    0.0005
+Training time:  1154.55 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.1877        1.2664
+T-MAE     :        0.83609       0.86079
+T-RSQ     :              1             1
+F-RMSE    :    *    2.4153        2.4846
+F-MAE     :    *    1.5466   *    1.5605
+F-RSQ     :        0.99758       0.99743
+T-Hier    :        0.42614         0.427
+Error Loss:    *    5.9856   *    6.1724
+Loss      :    *    6.4187   *    6.6063
+Best T-RMSE so far:    1.256
+Epochs since last best: 10
+Current max epochs: 115
+Total epoch time:  1255.24 s
+__________________________________________________
+Epoch 106:
+Learning rate:    0.0005
+Training time:  1151.29 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.2357        1.3079
+T-MAE     :        0.84737       0.87902
+T-RSQ     :              1             1
+F-RMSE    :         2.4349        2.4877
+F-MAE     :         1.5501        1.5617
+F-RSQ     :        0.99754       0.99743
+T-Hier    :        0.42433       0.42504
+Error Loss:         6.0681        6.2363
+Loss      :         6.4994        6.6683
+Best T-RMSE so far:    1.256
+Epoch 00107: reducing learning rate of group 0 to 2.5000e-04.
+Epochs since last best: 11
+Current max epochs: 115
+Total epoch time:  1249.94 s
+__________________________________________________
+Epoch 107:
+Learning rate:   0.00025
+Training time:  1149.66 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *    1.0935   *    1.1784
+T-MAE     :    *   0.75367   *   0.78237
+T-RSQ     :              1             1
+F-RMSE    :         2.4187   *    2.4594
+F-MAE     :    *    1.5038   *    1.5168
+F-RSQ     :        0.99757       0.99749
+T-Hier    :        0.42311       0.42339
+Error Loss:    *    5.7696   *     5.937
+Loss      :    *    6.1997   *    6.3673
+Best T-RMSE so far:   1.1784
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 127
+Total epoch time:  1245.87 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 108:
+Learning rate:   0.00025
+Training time:  1154.88 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *    1.0722   *    1.1547
+T-MAE     :    *   0.72933   *   0.76163
+T-RSQ     :              1             1
+F-RMSE    :    *     2.334   *    2.4076
+F-MAE     :    *    1.4936   *    1.5089
+F-RSQ     :        0.99775       0.99759
+T-Hier    :    *   0.42127   *   0.42236
+Error Loss:    *    5.6292   *    5.8327
+Loss      :    *    6.0574   *     6.262
+Best T-RMSE so far:   1.1547
+Epochs since last best: 0
+Current max epochs: 128
+Total epoch time:  1256.05 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 109:
+Learning rate:   0.00025
+Training time:  1156.04 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.0748        1.1633
+T-MAE     :        0.73365       0.76907
+T-RSQ     :              1             1
+F-RMSE    :    *    2.3289   *    2.4042
+F-MAE     :    *    1.4873   *    1.5024
+F-RSQ     :        0.99775        0.9976
+T-Hier    :        0.42223       0.42293
+Error Loss:    *    5.6246         5.839
+Loss      :    *    6.0538        6.2688
+Best T-RMSE so far:   1.1547
+Epochs since last best: 1
+Current max epochs: 128
+Total epoch time:  1253.19 s
+__________________________________________________
+Epoch 110:
+Learning rate:   0.00025
+Training time:  1155.46 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.0821        1.1625
+T-MAE     :         0.7461       0.77363
+T-RSQ     :              1             1
+F-RMSE    :         2.3395   *    2.4021
+F-MAE     :         1.4902   *    1.5011
+F-RSQ     :        0.99774        0.9976
+T-Hier    :        0.42151   *   0.42194
+Error Loss:         5.6579        5.8393
+Loss      :         6.0864        6.2682
+Best T-RMSE so far:   1.1547
+Epochs since last best: 2
+Current max epochs: 128
+Total epoch time:  1255.16 s
+__________________________________________________
+Epoch 111:
+Learning rate:   0.00025
+Training time:  1155.55 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :          1.097        1.1789
+T-MAE     :        0.74415       0.78101
+T-RSQ     :              1             1
+F-RMSE    :         2.3327   *    2.4019
+F-MAE     :         1.4875   *    1.5007
+F-RSQ     :        0.99775        0.9976
+T-Hier    :    *   0.41929   *   0.41937
+Error Loss:         5.6614        5.8625
+Loss      :         6.0876        6.2888
+Best T-RMSE so far:   1.1547
+Epochs since last best: 3
+Current max epochs: 128
+Total epoch time:  1253.87 s
+__________________________________________________
+Epoch 112:
+Learning rate:   0.00025
+Training time:  1154.93 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.2649        1.3498
+T-MAE     :        0.90512        0.9441
+T-RSQ     :              1             1
+F-RMSE    :    *    2.3201   *    2.3894
+F-MAE     :    *    1.4793   *    1.4925
+F-RSQ     :        0.99778       0.99763
+T-Hier    :        0.41982       0.42019
+Error Loss:         5.9694        6.1758
+Loss      :         6.3962        6.6029
+Best T-RMSE so far:   1.1547
+Epochs since last best: 4
+Current max epochs: 128
+Total epoch time:  1252.18 s
+__________________________________________________
+Epoch 113:
+Learning rate:   0.00025
+Training time:  1152.83 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *    1.0549   *    1.1508
+T-MAE     :    *   0.72365   *   0.75615
+T-RSQ     :              1             1
+F-RMSE    :         2.3252        2.3994
+F-MAE     :         1.4869         1.501
+F-RSQ     :        0.99776       0.99761
+T-Hier    :        0.42311       0.42283
+Error Loss:    *    5.5907   *    5.8074
+Loss      :    *    6.0208   *    6.2371
+Best T-RMSE so far:   1.1508
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 133
+Total epoch time:  1252.95 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 114:
+Learning rate:   0.00025
+Training time:  1154.42 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.0654        1.1568
+T-MAE     :        0.72468       0.76015
+T-RSQ     :              1             1
+F-RMSE    :    *    2.3088   *    2.3846
+F-MAE     :    *    1.4726   *    1.4882
+F-RSQ     :        0.99779       0.99764
+T-Hier    :        0.42151       0.42159
+Error Loss:    *    5.5715   *    5.7897
+Loss      :    *         6   *    6.2183
+Best T-RMSE so far:   1.1508
+Epochs since last best: 1
+Current max epochs: 133
+Total epoch time:  1249.94 s
+__________________________________________________
+Epoch 115:
+Learning rate:   0.00025
+Training time:  1152.61 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *    1.0435   *    1.1405
+T-MAE     :    *   0.70827   *   0.74387
+T-RSQ     :              1             1
+F-RMSE    :         2.3101   *    2.3789
+F-MAE     :    *    1.4705   *     1.484
+F-RSQ     :        0.99779       0.99765
+T-Hier    :        0.42107       0.42146
+Error Loss:    *    5.5324   *    5.7474
+Loss      :    *    5.9604   *    6.1758
+Best T-RMSE so far:   1.1405
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 135
+Total epoch time:  1253.12 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 116:
+Learning rate:   0.00025
+Training time:  1155.35 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.1818        1.2844
+T-MAE     :        0.83336        0.8756
+T-RSQ     :              1             1
+F-RMSE    :         2.3102        2.3858
+F-MAE     :         1.4757        1.4912
+F-RSQ     :        0.99779       0.99763
+T-Hier    :    *   0.41653   *    0.4167
+Error Loss:          5.801        6.0369
+Loss      :         6.2245        6.4605
+Best T-RMSE so far:   1.1405
+Epochs since last best: 1
+Current max epochs: 135
+Total epoch time:  1253.75 s
+__________________________________________________
+Epoch 117:
+Learning rate:   0.00025
+Training time:  1150.14 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.0604         1.157
+T-MAE     :        0.73241       0.76362
+T-RSQ     :              1             1
+F-RMSE    :    *    2.3011   *    2.3781
+F-MAE     :          1.471         1.485
+F-RSQ     :        0.99781       0.99765
+T-Hier    :        0.41973       0.41989
+Error Loss:         5.5648        5.7837
+Loss      :         5.9915        6.2105
+Best T-RMSE so far:   1.1405
+Epochs since last best: 2
+Current max epochs: 135
+Total epoch time:  1245.09 s
+__________________________________________________
+Epoch 118:
+Learning rate:   0.00025
+Training time:  1155.89 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :          1.118        1.1989
+T-MAE     :        0.80213       0.82556
+T-RSQ     :              1             1
+F-RMSE    :         2.3125        2.3851
+F-MAE     :         1.4742        1.4875
+F-RSQ     :        0.99779       0.99764
+T-Hier    :    *   0.41602   *   0.41665
+Error Loss:         5.7069         5.897
+Loss      :         6.1298        6.3206
+Best T-RMSE so far:   1.1405
+Epochs since last best: 3
+Current max epochs: 135
+Total epoch time:  1254.28 s
+__________________________________________________
+Epoch 119:
+Learning rate:   0.00025
+Training time:  1153.98 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :          1.088         1.186
+T-MAE     :        0.74994       0.79211
+T-RSQ     :              1             1
+F-RMSE    :         2.3078        2.3816
+F-MAE     :    *    1.4691   *    1.4837
+F-RSQ     :        0.99779       0.99764
+T-Hier    :        0.41819       0.41875
+Error Loss:         5.6149        5.8434
+Loss      :           6.04        6.2691
+Best T-RMSE so far:   1.1405
+Epochs since last best: 4
+Current max epochs: 135
+Total epoch time:  1252.81 s
+__________________________________________________
+Epoch 120:
+Learning rate:   0.00025
+Training time:  1155.21 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.3051        1.3561
+T-MAE     :        0.97037       0.98438
+T-RSQ     :              1             1
+F-RMSE    :    *    2.2899   *    2.3657
+F-MAE     :    *    1.4596   *    1.4746
+F-RSQ     :        0.99782       0.99767
+T-Hier    :        0.41637       0.41731
+Error Loss:         6.0249        6.1808
+Loss      :         6.4482         6.605
+Best T-RMSE so far:   1.1405
+Epochs since last best: 5
+Current max epochs: 135
+Total epoch time:  1252.54 s
+__________________________________________________
+Epoch 121:
+Learning rate:   0.00025
+Training time:  1154.7 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.0668        1.1508
+T-MAE     :        0.73503       0.76167
+T-RSQ     :              1             1
+F-RMSE    :         2.3014        2.3787
+F-MAE     :         1.4745        1.4882
+F-RSQ     :         0.9978       0.99765
+T-Hier    :        0.41785       0.41844
+Error Loss:         5.5777        5.7794
+Loss      :         6.0025        6.2047
+Best T-RMSE so far:   1.1405
+Epochs since last best: 6
+Current max epochs: 135
+Total epoch time:  1257.5 s
+__________________________________________________
+Epoch 122:
+Learning rate:   0.00025
+Training time:  1155.58 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.0774        1.1695
+T-MAE     :         0.7537       0.78751
+T-RSQ     :              1             1
+F-RMSE    :         2.2953        2.3708
+F-MAE     :         1.4659        1.4815
+F-RSQ     :        0.99782       0.99766
+T-Hier    :        0.42185        0.4222
+Error Loss:         5.5922        5.8093
+Loss      :          6.021        6.2384
+Best T-RMSE so far:   1.1405
+Epochs since last best: 7
+Current max epochs: 135
+Total epoch time:  1256.18 s
+__________________________________________________
+Epoch 123:
+Learning rate:   0.00025
+Training time:  1150.4 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.2452        1.3473
+T-MAE     :        0.90406       0.94948
+T-RSQ     :              1             1
+F-RMSE    :    *    2.2842        2.3682
+F-MAE     :         1.4611        1.4774
+F-RSQ     :        0.99783       0.99767
+T-Hier    :        0.41852       0.41983
+Error Loss:         5.8946        6.1424
+Loss      :           6.32        6.5692
+Best T-RMSE so far:   1.1405
+Epochs since last best: 8
+Current max epochs: 135
+Total epoch time:  1248.63 s
+__________________________________________________
+Epoch 124:
+Learning rate:   0.00025
+Training time:  1155.53 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.1589        1.2571
+T-MAE     :        0.80698       0.84832
+T-RSQ     :              1             1
+F-RMSE    :         2.2878        2.3715
+F-MAE     :           1.46        1.4749
+F-RSQ     :        0.99784       0.99766
+T-Hier    :        0.41735       0.41837
+Error Loss:         5.7136        5.9518
+Loss      :         6.1379        6.3771
+Best T-RMSE so far:   1.1405
+Epochs since last best: 9
+Current max epochs: 135
+Total epoch time:  1256.37 s
+__________________________________________________
+Epoch 125:
+Learning rate:   0.00025
+Training time:  1155.79 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.1904        1.2829
+T-MAE     :        0.86078       0.89801
+T-RSQ     :              1             1
+F-RMSE    :         2.3028        2.3663
+F-MAE     :         1.4603        1.4757
+F-RSQ     :         0.9978       0.99767
+T-Hier    :        0.42653       0.42761
+Error Loss:         5.8142         6.023
+Loss      :         6.2477        6.4575
+Best T-RMSE so far:   1.1405
+Epochs since last best: 10
+Current max epochs: 135
+Total epoch time:  1255.08 s
+__________________________________________________
+Epoch 126:
+Learning rate:   0.00025
+Training time:  1154.19 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.0797        1.1631
+T-MAE     :        0.74728       0.77148
+T-RSQ     :              1             1
+F-RMSE    :    *    2.2824   *    2.3589
+F-MAE     :    *    1.4564   *    1.4694
+F-RSQ     :        0.99784       0.99769
+T-Hier    :    *   0.41564   *   0.41603
+Error Loss:         5.5659        5.7629
+Loss      :         5.9884        6.1859
+Best T-RMSE so far:   1.1405
+Epoch 00127: reducing learning rate of group 0 to 1.2500e-04.
+Epochs since last best: 11
+Current max epochs: 135
+Total epoch time:  1252.14 s
+__________________________________________________
+Epoch 127:
+Learning rate:  0.000125
+Training time:  1153.56 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *    1.0141   *    1.1055
+T-MAE     :    *   0.67266   *   0.71133
+T-RSQ     :              1             1
+F-RMSE    :    *    2.2574   *    2.3313
+F-MAE     :    *     1.436   *    1.4493
+F-RSQ     :         0.9979       0.99774
+T-Hier    :    *    0.4143   *   0.41517
+Error Loss:    *    5.3802   *    5.5974
+Loss      :    *    5.8014   *    6.0195
+Best T-RMSE so far:   1.1055
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 147
+Total epoch time:  1249.08 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 128:
+Learning rate:  0.000125
+Training time:  1153.64 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *    1.0002   *    1.0987
+T-MAE     :        0.68104       0.71451
+T-RSQ     :              1             1
+F-RMSE    :    *    2.2519        2.3335
+F-MAE     :    *    1.4352        1.4495
+F-RSQ     :         0.9979       0.99774
+T-Hier    :         0.4158       0.41588
+Error Loss:    *    5.3683   *    5.5961
+Loss      :    *     5.791   *    6.0189
+Best T-RMSE so far:   1.0987
+Epochs since last best: 0
+Current max epochs: 148
+Total epoch time:  1248.96 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 129:
+Learning rate:  0.000125
+Training time:  1151.71 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.0485        1.1486
+T-MAE     :         0.7083       0.74733
+T-RSQ     :              1             1
+F-RMSE    :    *    2.2507   *    2.3266
+F-MAE     :    *    1.4334   *    1.4477
+F-RSQ     :         0.9979       0.99775
+T-Hier    :        0.41529       0.41558
+Error Loss:         5.4409        5.6703
+Loss      :         5.8631        6.0928
+Best T-RMSE so far:   1.0987
+Epochs since last best: 1
+Current max epochs: 148
+Total epoch time:  1246.22 s
+__________________________________________________
+Epoch 130:
+Learning rate:  0.000125
+Training time:  1152.93 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :          1.015        1.1027
+T-MAE     :        0.68118       0.71409
+T-RSQ     :              1             1
+F-RMSE    :    *    2.2377   *    2.3235
+F-MAE     :    *    1.4268   *    1.4431
+F-RSQ     :        0.99792       0.99776
+T-Hier    :        0.41433   *   0.41398
+Error Loss:    *    5.3606   *    5.5834
+Loss      :    *    5.7818   *    6.0043
+Best T-RMSE so far:   1.0987
+Epochs since last best: 2
+Current max epochs: 148
+Total epoch time:  1251.09 s
+__________________________________________________
+Epoch 131:
+Learning rate:  0.000125
+Training time:  1154.57 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.0381        1.1404
+T-MAE     :        0.70346       0.74401
+T-RSQ     :              1             1
+F-RMSE    :         2.2426        2.3285
+F-MAE     :         1.4301        1.4465
+F-RSQ     :        0.99792       0.99775
+T-Hier    :    *    0.4132   *   0.41379
+Error Loss:         5.4142        5.6594
+Loss      :         5.8343        6.0801
+Best T-RMSE so far:   1.0987
+Epochs since last best: 3
+Current max epochs: 148
+Total epoch time:  1252.14 s
+__________________________________________________
+Epoch 132:
+Learning rate:  0.000125
+Training time:  1153.18 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.0652        1.1418
+T-MAE     :         0.7348       0.76532
+T-RSQ     :              1             1
+F-RMSE    :    *    2.2368   *    2.3233
+F-MAE     :         1.4286        1.4441
+F-RSQ     :        0.99793       0.99776
+T-Hier    :        0.41471       0.41532
+Error Loss:         5.4654        5.6746
+Loss      :          5.887        6.0968
+Best T-RMSE so far:   1.0987
+Epochs since last best: 4
+Current max epochs: 148
+Total epoch time:  1250.35 s
+__________________________________________________
+Epoch 133:
+Learning rate:  0.000125
+Training time:  1153.4 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.0472        1.1381
+T-MAE     :        0.73496       0.76253
+T-RSQ     :              1             1
+F-RMSE    :         2.2395   *    2.3212
+F-MAE     :         1.4273   *    1.4422
+F-RSQ     :        0.99792       0.99776
+T-Hier    :        0.41454       0.41472
+Error Loss:         5.4489         5.664
+Loss      :         5.8703        6.0856
+Best T-RMSE so far:   1.0987
+Epochs since last best: 5
+Current max epochs: 148
+Total epoch time:  1252.01 s
+__________________________________________________
+Epoch 134:
+Learning rate:  0.000125
+Training time:  1155.57 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.0324        1.1272
+T-MAE     :        0.70248       0.74198
+T-RSQ     :              1             1
+F-RMSE    :         2.2393   *    2.3159
+F-MAE     :    *    1.4253   *    1.4402
+F-RSQ     :        0.99792       0.99777
+T-Hier    :        0.41378       0.41454
+Error Loss:         5.3995        5.6252
+Loss      :         5.8202        6.0467
+Best T-RMSE so far:   1.0987
+Epochs since last best: 6
+Current max epochs: 148
+Total epoch time:  1254.75 s
+__________________________________________________
+Epoch 135:
+Learning rate:  0.000125
+Training time:  1154.98 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :         1.0184        1.1256
+T-MAE     :        0.70225       0.74204
+T-RSQ     :              1             1
+F-RMSE    :    *    2.2308   *    2.3153
+F-MAE     :    *    1.4236   *    1.4386
+F-RSQ     :        0.99795       0.99777
+T-Hier    :        0.41921       0.41871
+Error Loss:         5.3751        5.6216
+Loss      :         5.8012        6.0472
+Best T-RMSE so far:   1.0987
+Epochs since last best: 7
+Current max epochs: 148
+Total epoch time:  1257.31 s
+__________________________________________________
+Epoch 136:
+Learning rate:  0.000125
+Training time:  1155.26 s
+Validating...
+                     train         valid
+----------------------------------------
+T-RMSE    :    *   0.99939        1.1034
+T-MAE     :        0.67789       0.71881
+T-RSQ     :              1             1
+F-RMSE    :          2.233        2.3156
+F-MAE     :         1.4239        1.4389
+F-RSQ     :        0.99793       0.99777
+T-Hier    :        0.41527       0.41556
+Error Loss:    *    5.3342   *    5.5767
+Loss      :    *    5.7564   *    5.9991
+Best T-RMSE so far:   1.0987
+Epochs since last best: 8
+Current max epochs: 148
+Total epoch time:  1254.44 s
+__________________________________________________
+Epoch 137:
+Learning rate:  0.000125

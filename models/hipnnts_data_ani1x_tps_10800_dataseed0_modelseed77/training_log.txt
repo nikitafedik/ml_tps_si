@@ -1,0 +1,3160 @@
+Determined Inputs: ["Species(db_name='Z')", "Positions(db_name='R')"]
+Determined Outputs: ['PeratomPredicted', 'HEnergy.hierarchicality', 'HEnergy.mol_energy', 'forces', 'L^P_Reg(HIPNN,p=2)']
+Determined Targets: ["Species(db_name='Z')", 'HEnergy.mol_energy', 'forces']
+Device was not specified. Attempting to default to device: cuda:0
+Inputs:
+	 I0 : SpeciesNode('Species(db_name='Z')')<0x14a4ecf09300>
+	 I1 : PositionsNode('Positions(db_name='R')')<0x14a4ecf093f0>
+Outputs:
+	 O0 : PerAtom('PeratomPredicted')<0x14a4c6408280>
+	 O1 : IndexNode('HEnergy.hierarchicality')<0x14a4c64080a0>
+	 O2 : IndexNode('HEnergy.mol_energy')<0x14a4c63d0910>
+	 O3 : GradientNode('forces')<0x14a4c63d1f60>
+	 O4 : _LPReg('L^P_Reg(HIPNN,p=2)')<0x14a4c643e770>
+Order:
+I0-------------------> H0  : OneHot
+H0-------------------> H1  : OneHot.nonblank
+H0-------------------> H2  : OneHot.encoding
+H1,H2----------------> H3  : PaddingIndexer
+H3-------------------> H4  : PaddingIndexer.mol_index
+H3-------------------> H5  : PaddingIndexer.atom_index
+H3-------------------> H6  : PaddingIndexer.n_molecules
+H3-------------------> H7  : PaddingIndexer.n_atoms_max
+H3-------------------> H8  : PaddingIndexer.indexed_features
+H3-------------------> H9  : PaddingIndexer.real_atoms
+H3-------------------> H10 : PaddingIndexer.inv_real_atoms
+I1,H10,H9,H1---------> H11 : PairIndexer
+H11------------------> H12 : PairIndexer.pair_dist
+H11------------------> H13 : PairIndexer.pair_first
+H11------------------> H14 : PairIndexer.pair_second
+H11------------------> H15 : PairIndexer.pair_coord
+H12,H14,H8,H15,H13---> H16 : HIPNN
+H6,H16,H4------------> H17 : HEnergy
+H17------------------> H18 : HEnergy.energy_terms
+H17------------------> O1  : HEnergy.hierarchicality
+H17------------------> O2  : HEnergy.mol_energy
+I0,O2----------------> O0  : PeratomPredicted
+H17------------------> H22 : HEnergy.atom_energies
+I1,O2----------------> O3  : forces
+H16------------------> O4  : L^P_Reg(HIPNN,p=2)
+Arrays found:  {'G': 'ani_10800_seed0-G.npy', 'R': 'ani_10800_seed0-R.npy', 'T': 'ani_10800_seed0-T.npy', 'Z': 'ani_10800_seed0-Z.npy'}
+Data types:
+{'G': dtype('float32'), 'R': dtype('float32'), 'T': dtype('float32'), 'Z': dtype('int64')}
+All arrays:
+--------------------------------------------------------------------------------------
+| Name               | dtype              | shape                                    |
+--------------------------------------------------------------------------------------
+| G                  | dtype('float32')   | (4966805, 63, 3)                         |
+| R                  | dtype('float32')   | (4966805, 63, 3)                         |
+| T                  | dtype('float32')   | (4966805, 1)                             |
+| Z                  | dtype('int64')     | (4966805, 63)                            |
+--------------------------------------------------------------------------------------
+Database: Using auto-generated data indices
+Arrays for split: test
+--------------------------------------------------------------------------------------
+| Name               | dtype              | shape                                    |
+--------------------------------------------------------------------------------------
+| G                  | torch.float32      | torch.Size([496680, 63, 3])              |
+| R                  | torch.float32      | torch.Size([496680, 63, 3])              |
+| T                  | torch.float32      | torch.Size([496680, 1])                  |
+| Z                  | torch.int64        | torch.Size([496680, 63])                 |
+| indices            | torch.int64        | torch.Size([496680])                     |
+| split_indices      | torch.int64        | torch.Size([496680])                     |
+--------------------------------------------------------------------------------------
+Arrays for split: valid
+--------------------------------------------------------------------------------------
+| Name               | dtype              | shape                                    |
+--------------------------------------------------------------------------------------
+| G                  | torch.float32      | torch.Size([496680, 63, 3])              |
+| R                  | torch.float32      | torch.Size([496680, 63, 3])              |
+| T                  | torch.float32      | torch.Size([496680, 1])                  |
+| Z                  | torch.int64        | torch.Size([496680, 63])                 |
+| indices            | torch.int64        | torch.Size([496680])                     |
+| split_indices      | torch.int64        | torch.Size([496680])                     |
+--------------------------------------------------------------------------------------
+Arrays for split: train
+--------------------------------------------------------------------------------------
+| Name               | dtype              | shape                                    |
+--------------------------------------------------------------------------------------
+| G                  | torch.float32      | torch.Size([3973445, 63, 3])             |
+| R                  | torch.float32      | torch.Size([3973445, 63, 3])             |
+| T                  | torch.float32      | torch.Size([3973445, 1])                 |
+| Z                  | torch.int64        | torch.Size([3973445, 63])                |
+| indices            | torch.int64        | torch.Size([3973445])                    |
+| split_indices      | torch.int64        | torch.Size([3973445])                    |
+--------------------------------------------------------------------------------------
+Computed E0 energies: tensor([[ -30.8774, -211.7957,  -92.2381,  -91.7905]])
+Using device:  cuda
+Beginning training.
+Model:
+Inputs:
+	 I0 : SpeciesNode('Species(db_name='Z')')<0x14a4ecf09300>
+	 I1 : PositionsNode('Positions(db_name='R')')<0x14a4ecf093f0>
+Outputs:
+	 O0 : PerAtom('PeratomPredicted')<0x14a4c6408280>
+	 O1 : IndexNode('HEnergy.hierarchicality')<0x14a4c64080a0>
+	 O2 : IndexNode('HEnergy.mol_energy')<0x14a4c63d0910>
+	 O3 : GradientNode('forces')<0x14a4c63d1f60>
+	 O4 : _LPReg('L^P_Reg(HIPNN,p=2)')<0x14a4c643e770>
+Order:
+I0-------------------> H0  : OneHot
+H0-------------------> H1  : OneHot.nonblank
+H0-------------------> H2  : OneHot.encoding
+H1,H2----------------> H3  : PaddingIndexer
+H3-------------------> H4  : PaddingIndexer.mol_index
+H3-------------------> H5  : PaddingIndexer.atom_index
+H3-------------------> H6  : PaddingIndexer.n_molecules
+H3-------------------> H7  : PaddingIndexer.n_atoms_max
+H3-------------------> H8  : PaddingIndexer.indexed_features
+H3-------------------> H9  : PaddingIndexer.real_atoms
+H3-------------------> H10 : PaddingIndexer.inv_real_atoms
+I1,H10,H9,H1---------> H11 : PairIndexer
+H11------------------> H12 : PairIndexer.pair_dist
+H11------------------> H13 : PairIndexer.pair_first
+H11------------------> H14 : PairIndexer.pair_second
+H11------------------> H15 : PairIndexer.pair_coord
+H12,H14,H8,H15,H13---> H16 : HIPNN
+H6,H16,H4------------> H17 : HEnergy
+H17------------------> H18 : HEnergy.energy_terms
+H17------------------> O1  : HEnergy.hierarchicality
+H17------------------> O2  : HEnergy.mol_energy
+I0,O2----------------> O0  : PeratomPredicted
+H17------------------> H22 : HEnergy.atom_energies
+I1,O2----------------> O3  : forces
+H16------------------> O4  : L^P_Reg(HIPNN,p=2)
+Model Params:
+cuda:0 Fixed torch.int64 torch.Size([9]) moddict.node0.species_map
+cuda:0 Learned torch.float32 torch.Size([20, 128, 4]) moddict.node16.blocks.0.0.base_layer.int_weights
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.0.0.base_layer.vecscales
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.0.0.base_layer.quadscales
+cuda:0 Learned torch.float32 torch.Size([1, 20]) moddict.node16.blocks.0.0.base_layer.sensitivity.mu
+cuda:0 Learned torch.float32 torch.Size([1, 20]) moddict.node16.blocks.0.0.base_layer.sensitivity.sigma
+cuda:0 Learned torch.float32 torch.Size([128, 4]) moddict.node16.blocks.0.0.base_layer.selfint.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.0.0.base_layer.selfint.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.0.0.res_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.0.0.res_layer.bias
+cuda:0 Learned torch.float32 torch.Size([128, 4]) moddict.node16.blocks.0.0.adjust_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.0.1.base_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.0.1.base_layer.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.0.1.res_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.0.1.res_layer.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.0.2.base_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.0.2.base_layer.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.0.2.res_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.0.2.res_layer.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.0.3.base_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.0.3.base_layer.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.0.3.res_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.0.3.res_layer.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.0.4.base_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.0.4.base_layer.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.0.4.res_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.0.4.res_layer.bias
+cuda:0 Learned torch.float32 torch.Size([20, 128, 128]) moddict.node16.blocks.1.0.base_layer.int_weights
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.1.0.base_layer.vecscales
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.1.0.base_layer.quadscales
+cuda:0 Learned torch.float32 torch.Size([1, 20]) moddict.node16.blocks.1.0.base_layer.sensitivity.mu
+cuda:0 Learned torch.float32 torch.Size([1, 20]) moddict.node16.blocks.1.0.base_layer.sensitivity.sigma
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.1.0.base_layer.selfint.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.1.0.base_layer.selfint.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.1.0.res_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.1.0.res_layer.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.1.1.base_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.1.1.base_layer.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.1.1.res_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.1.1.res_layer.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.1.2.base_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.1.2.base_layer.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.1.2.res_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.1.2.res_layer.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.1.3.base_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.1.3.base_layer.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.1.3.res_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.1.3.res_layer.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.1.4.base_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.1.4.base_layer.bias
+cuda:0 Learned torch.float32 torch.Size([128, 128]) moddict.node16.blocks.1.4.res_layer.weight
+cuda:0 Learned torch.float32 torch.Size([128]) moddict.node16.blocks.1.4.res_layer.bias
+cuda:0 Fixed torch.float32 torch.Size([1, 4]) moddict.node17.layers.0.weight
+cuda:0 Learned torch.float32 torch.Size([1, 128]) moddict.node17.layers.1.weight
+cuda:0 Learned torch.float32 torch.Size([1]) moddict.node17.layers.1.bias
+cuda:0 Learned torch.float32 torch.Size([1, 128]) moddict.node17.layers.2.weight
+cuda:0 Learned torch.float32 torch.Size([1]) moddict.node17.layers.2.bias
+Total Count: 653663
+At least 10 epochs will be run
+__________________________________________________
+Epoch 0:
+Learning rate:    0.0005
+Training time:  1268.05 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *    5.3731   *     5.365
+T-MAE       :    *    4.1033   *    4.1024
+T-RSQ       :    *   0.99993   *   0.99993
+TperAtom MAE:    *   0.27228   *   0.27201
+T-Hier      :    *    3.5078   *    3.5134
+L2Reg       :    *    2859.5   *    2859.5
+Loss-Err    :    *    22.955   *    23.003
+Loss-Reg    :    *    3.5107   *    3.5163
+Loss        :    *    26.465   *    26.519
+F-RMSE      :    *    8.5295   *    8.5886
+F-MAE       :    *    4.9489   *    4.9469
+F-RSQ       :    *   0.96987   *   0.96944
+Best Loss-Err so far:   23.003
+Epochs since last best: 0
+Current max epochs: 10
+Total epoch time:  1378.27 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 1:
+Learning rate:    0.0005
+Training time:  1263.63 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *    4.1018   *    4.0851
+T-MAE       :    *    2.8497   *    2.8507
+T-RSQ       :        0.99996       0.99996
+TperAtom MAE:    *   0.19597   *   0.19623
+T-Hier      :    *    3.2296   *    3.2301
+L2Reg       :         4070.8        4070.8
+Loss-Err    :    *    18.501   *    18.857
+Loss-Reg    :    *    3.2336   *    3.2341
+Loss        :    *    21.735   *    22.092
+F-RMSE      :    *    7.2302   *    7.5991
+F-MAE       :    *    4.3195   *    4.3226
+F-RSQ       :        0.97829       0.97608
+Best Loss-Err so far:   18.857
+Epochs since last best: 0
+Current max epochs: 11
+Total epoch time:  1374.42 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 2:
+Learning rate:    0.0005
+Training time:  1264.01 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *    3.7699   *    3.7938
+T-MAE       :    *    2.8114   *    2.8201
+T-RSQ       :        0.99996       0.99996
+TperAtom MAE:    *   0.19099   *   0.19182
+T-Hier      :    *    2.9721   *    2.9767
+L2Reg       :         5317.7        5317.7
+Loss-Err    :    *    16.392   *    16.828
+Loss-Reg    :    *    2.9774   *     2.982
+Loss        :    *    19.369   *     19.81
+F-RMSE      :    *    6.2473   *     6.643
+F-MAE       :    *    3.5635   *    3.5713
+F-RSQ       :        0.98373       0.98172
+Best Loss-Err so far:   16.828
+Epochs since last best: 0
+Current max epochs: 12
+Total epoch time:  1375.31 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 3:
+Learning rate:    0.0005
+Training time:  1264.55 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *    3.0478   *    3.0342
+T-MAE       :    *     2.111   *    2.1124
+T-RSQ       :        0.99998       0.99998
+TperAtom MAE:    *    0.1412   *   0.14149
+T-Hier      :    *    2.8585   *    2.8638
+L2Reg       :         6547.3        6547.3
+Loss-Err    :    *    15.097   *    14.271
+Loss-Reg    :    *     2.865   *    2.8703
+Loss        :    *    17.962   *    17.142
+F-RMSE      :         6.6395   *    5.8332
+F-MAE       :    *    3.2984   *    3.2916
+F-RSQ       :        0.98182        0.9859
+Best Loss-Err so far:   14.271
+Epochs since last best: 0
+Current max epochs: 13
+Total epoch time:  1375.61 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 4:
+Learning rate:    0.0005
+Training time:  1263.62 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *    2.8226   *    2.8216
+T-MAE       :    *    1.9648   *    1.9654
+T-RSQ       :        0.99998       0.99998
+TperAtom MAE:    *   0.13447   *   0.13445
+T-Hier      :    *    2.6555   *    2.6599
+L2Reg       :           7758          7758
+Loss-Err    :    *    12.948   *    13.055
+Loss-Reg    :    *    2.6633   *    2.6677
+Loss        :    *    15.611   *    15.723
+F-RMSE      :    *    5.1062   *    5.2139
+F-MAE       :    *    3.0543   *    3.0543
+F-RSQ       :        0.98916       0.98874
+Best Loss-Err so far:   13.055
+Epochs since last best: 0
+Current max epochs: 14
+Total epoch time:  1374.89 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 5:
+Learning rate:    0.0005
+Training time:  1264.39 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :          3.321        3.3277
+T-MAE       :          2.489        2.4956
+T-RSQ       :        0.99997       0.99997
+TperAtom MAE:        0.17492       0.17561
+T-Hier      :    *    2.5726   *    2.5715
+L2Reg       :         8948.9        8948.9
+Loss-Err    :         13.813        14.238
+Loss-Reg    :    *    2.5816   *    2.5804
+Loss        :         16.394        16.818
+F-RMSE      :         5.1137        5.5172
+F-MAE       :    *    2.8888   *     2.897
+F-RSQ       :        0.98914       0.98739
+Best Loss-Err so far:   13.055
+Epochs since last best: 1
+Current max epochs: 14
+Total epoch time:  1375.45 s
+__________________________________________________
+Epoch 6:
+Learning rate:    0.0005
+Training time:  1264.56 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *    2.6477   *    2.6694
+T-MAE       :    *    1.8431   *    1.8541
+T-RSQ       :        0.99998       0.99998
+TperAtom MAE:    *   0.12185   *   0.12263
+T-Hier      :    *    2.4757   *    2.4776
+L2Reg       :          10171         10171
+Loss-Err    :    *    11.755   *    12.293
+Loss-Reg    :    *    2.4858   *    2.4877
+Loss        :    *    14.241   *     14.78
+F-RMSE      :    *    4.4921   *    4.9877
+F-MAE       :    *    2.7718   *    2.7815
+F-RSQ       :        0.99161       0.98969
+Best Loss-Err so far:   12.293
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 16
+Total epoch time:  1375.57 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 7:
+Learning rate:    0.0005
+Training time:  1265.5 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         3.0579        3.0771
+T-MAE       :          2.373        2.3822
+T-RSQ       :        0.99998       0.99998
+TperAtom MAE:        0.16253        0.1632
+T-Hier      :    *    1.1564   *    1.1573
+L2Reg       :          11198         11198
+Loss-Err    :         12.523        13.157
+Loss-Reg    :    *    1.1676   *    1.1685
+Loss        :    *    13.691   *    14.326
+F-RMSE      :    *    4.3969        4.9987
+F-MAE       :    *    2.6953   *    2.6994
+F-RSQ       :        0.99194       0.98965
+Best Loss-Err so far:   12.293
+Epochs since last best: 1
+Current max epochs: 16
+Total epoch time:  1376.65 s
+__________________________________________________
+Epoch 8:
+Learning rate:    0.0005
+Training time:  1266.07 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *    2.1264   *    2.1341
+T-MAE       :    *    1.4526   *    1.4592
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:    *  0.097947   *  0.098394
+T-Hier      :    *   0.95622   *   0.95481
+L2Reg       :          12212         12212
+Loss-Err    :    *    10.542   *    10.738
+Loss-Reg    :    *   0.96844   *   0.96702
+Loss        :    *    11.511   *    11.705
+F-RMSE      :          4.405   *    4.5847
+F-MAE       :    *    2.5583   *      2.56
+F-RSQ       :        0.99195       0.99129
+Best Loss-Err so far:   10.738
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 18
+Total epoch time:  1376.69 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 9:
+Learning rate:    0.0005
+Training time:  1263.95 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :          2.502        2.5172
+T-MAE       :         1.8371         1.846
+T-RSQ       :        0.99998       0.99998
+TperAtom MAE:        0.12771       0.12829
+T-Hier      :    *   0.86063   *   0.86119
+L2Reg       :          13222         13222
+Loss-Err    :         12.042        11.289
+Loss-Reg    :    *   0.87385   *   0.87441
+Loss        :         12.916        12.164
+F-RMSE      :         5.1727   *    4.3909
+F-MAE       :    *    2.5304   *    2.5352
+F-RSQ       :        0.98883       0.99201
+Best Loss-Err so far:   10.738
+Epochs since last best: 1
+Current max epochs: 18
+Total epoch time:  1374.74 s
+__________________________________________________
+Epoch 10:
+Learning rate:    0.0005
+Training time:  1265.36 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         3.1539        3.1528
+T-MAE       :         2.5787        2.5887
+T-RSQ       :        0.99997       0.99998
+TperAtom MAE:        0.17727         0.178
+T-Hier      :    *    0.8295   *   0.82985
+L2Reg       :          14212         14212
+Loss-Err    :         12.158        12.348
+Loss-Reg    :    *   0.84371   *   0.84406
+Loss        :         13.002        13.192
+F-RMSE      :    *    4.0293   *     4.205
+F-MAE       :    *    2.3964   *    2.4013
+F-RSQ       :        0.99325       0.99268
+Best Loss-Err so far:   10.738
+Epochs since last best: 2
+Current max epochs: 18
+Total epoch time:  1376.15 s
+__________________________________________________
+Epoch 11:
+Learning rate:    0.0005
+Training time:  1263.76 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *    2.1146   *    2.1324
+T-MAE       :         1.5202        1.5304
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:        0.10177       0.10257
+T-Hier      :    *    0.7989   *   0.79924
+L2Reg       :          15133         15133
+Loss-Err    :    *    10.047   *    10.114
+Loss-Reg    :    *   0.81404   *   0.81437
+Loss        :    *    10.861   *    10.929
+F-RMSE      :         4.0511   *    4.0837
+F-MAE       :    *    2.3605   *    2.3679
+F-RSQ       :        0.99316       0.99309
+Best Loss-Err so far:   10.114
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 21
+Total epoch time:  1374.73 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 12:
+Learning rate:    0.0005
+Training time:  1266.3 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *    2.0479   *    2.0721
+T-MAE       :         1.4668        1.4823
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.099662       0.10063
+T-Hier      :    *   0.77496   *   0.77492
+L2Reg       :          16038         16038
+Loss-Err    :    *    9.5641   *     9.737
+Loss-Reg    :    *     0.791   *   0.79096
+Loss        :    *    10.355   *    10.528
+F-RMSE      :    *    3.7312   *    3.8581
+F-MAE       :    *    2.3182   *    2.3244
+F-RSQ       :        0.99419       0.99383
+Best Loss-Err so far:    9.737
+Epochs since last best: 0
+Current max epochs: 22
+Total epoch time:  1376.71 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 13:
+Learning rate:    0.0005
+Training time:  1263.05 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *    1.8517   *    1.8665
+T-MAE       :    *    1.2539   *     1.262
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:    *   0.08499   *  0.085543
+T-Hier      :    *   0.76073   *   0.75997
+L2Reg       :          16819         16819
+Loss-Err    :    *    9.0998   *    9.3123
+Loss-Reg    :    *   0.77755   *   0.77678
+Loss        :    *    9.8774   *    10.089
+F-RMSE      :         3.7411        3.9264
+F-MAE       :    *    2.2531   *    2.2575
+F-RSQ       :        0.99418       0.99361
+Best Loss-Err so far:   9.3123
+Epochs since last best: 0
+Current max epochs: 23
+Total epoch time:  1373.82 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 14:
+Learning rate:    0.0005
+Training time:  1265.24 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         2.4519        2.4772
+T-MAE       :         1.7635        1.7777
+T-RSQ       :        0.99998       0.99998
+TperAtom MAE:        0.11967       0.12069
+T-Hier      :        0.76077        0.7619
+L2Reg       :          17611         17611
+Loss-Err    :         10.226        10.338
+Loss-Reg    :        0.77838       0.77951
+Loss        :         11.004        11.117
+F-RMSE      :         3.7347   *    3.8005
+F-MAE       :         2.2761        2.2825
+F-RSQ       :         0.9942       0.99402
+Best Loss-Err so far:   9.3123
+Epochs since last best: 1
+Current max epochs: 23
+Total epoch time:  1376.36 s
+__________________________________________________
+Epoch 15:
+Learning rate:    0.0005
+Training time:  1264.91 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.9129        1.9515
+T-MAE       :         1.3625         1.378
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.095808      0.096758
+T-Hier      :    *   0.73693   *   0.73846
+L2Reg       :          18257         18257
+Loss-Err    :         9.1852        10.027
+Loss-Reg    :    *   0.75518   *   0.75672
+Loss        :         9.9404        10.784
+F-RMSE      :         3.7455        4.5253
+F-MAE       :    *    2.1643   *    2.1721
+F-RSQ       :        0.99417       0.99152
+Best Loss-Err so far:   9.3123
+Epochs since last best: 2
+Current max epochs: 23
+Total epoch time:  1375.73 s
+__________________________________________________
+Epoch 16:
+Learning rate:    0.0005
+Training time:  1265.99 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         2.0113        2.0508
+T-MAE       :         1.4752        1.4928
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.095992       0.09718
+T-Hier      :    *   0.72659   *   0.72644
+L2Reg       :          18947         18947
+Loss-Err    :         9.3998         9.389
+Loss-Reg    :    *   0.74554   *   0.74539
+Loss        :         10.145        10.134
+F-RMSE      :    *    3.7182   *    3.6446
+F-MAE       :         2.1952        2.2007
+F-RSQ       :        0.99429        0.9945
+Best Loss-Err so far:   9.3123
+Epochs since last best: 3
+Current max epochs: 23
+Total epoch time:  1376.64 s
+__________________________________________________
+Epoch 17:
+Learning rate:    0.0005
+Training time:  1264.75 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *    1.8507        1.8865
+T-MAE       :         1.3141        1.3274
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.092236      0.093192
+T-Hier      :        0.72677   *   0.72605
+L2Reg       :          19672         19672
+Loss-Err    :    *    8.7471   *    8.7846
+Loss-Reg    :        0.74644       0.74572
+Loss        :    *    9.4936   *    9.5303
+F-RMSE      :    *    3.4611   *    3.4447
+F-MAE       :    *    2.1213   *     2.126
+F-RSQ       :        0.99504       0.99508
+Best Loss-Err so far:   8.7846
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 27
+Total epoch time:  1375.65 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 18:
+Learning rate:    0.0005
+Training time:  1265.81 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *    1.8275   *    1.8639
+T-MAE       :    *    1.2534        1.2681
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:    *  0.084282   *  0.085264
+T-Hier      :    *   0.71706   *   0.71754
+L2Reg       :          20323         20323
+Loss-Err    :    *    8.4776   *    8.6733
+Loss-Reg    :    *   0.73738   *   0.73787
+Loss        :    *     9.215   *    9.4112
+F-RMSE      :    *      3.32        3.4557
+F-MAE       :    *    2.0767   *    2.0856
+F-RSQ       :        0.99541       0.99505
+Best Loss-Err so far:   8.6733
+Epochs since last best: 0
+Current max epochs: 28
+Total epoch time:  1376.73 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 19:
+Learning rate:    0.0005
+Training time:  1263.53 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         2.5826        2.6023
+T-MAE       :         1.9862        2.0009
+T-RSQ       :        0.99998       0.99998
+TperAtom MAE:        0.12928       0.13019
+T-Hier      :    *    0.6976   *     0.697
+L2Reg       :          21016         21016
+Loss-Err    :         10.014         10.08
+Loss-Reg    :    *   0.71861   *   0.71802
+Loss        :         10.733        10.798
+F-RMSE      :         3.3685   *    3.3925
+F-MAE       :         2.0768   *    2.0839
+F-RSQ       :         0.9953       0.99523
+Best Loss-Err so far:   8.6733
+Epochs since last best: 1
+Current max epochs: 28
+Total epoch time:  1374.45 s
+__________________________________________________
+Epoch 20:
+Learning rate:    0.0005
+Training time:  1264.94 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *    1.7609   *    1.7945
+T-MAE       :    *    1.2465   *    1.2612
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.085833       0.08684
+T-Hier      :        0.72761       0.72958
+L2Reg       :          21677         21677
+Loss-Err    :         8.5493   *    8.6657
+Loss-Reg    :        0.74929       0.75126
+Loss        :         9.2986        9.4169
+F-RMSE      :         3.4867        3.5481
+F-MAE       :    *    2.0551   *    2.0618
+F-RSQ       :        0.99493       0.99479
+Best Loss-Err so far:   8.6657
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 30
+Total epoch time:  1375.65 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 21:
+Learning rate:    0.0005
+Training time:  1265.46 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :          2.666        2.7072
+T-MAE       :         2.1171        2.1316
+T-RSQ       :        0.99998       0.99998
+TperAtom MAE:        0.14145       0.14237
+T-Hier      :        0.72358       0.72382
+L2Reg       :          22339         22339
+Loss-Err    :         10.217        10.206
+Loss-Reg    :        0.74592       0.74616
+Loss        :         10.963        10.952
+F-RMSE      :         3.4166   *    3.3445
+F-MAE       :    *    2.0174   *    2.0225
+F-RSQ       :        0.99518       0.99537
+Best Loss-Err so far:   8.6657
+Epochs since last best: 1
+Current max epochs: 30
+Total epoch time:  1376.55 s
+__________________________________________________
+Epoch 22:
+Learning rate:    0.0005
+Training time:  1265.03 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *    1.7592        1.8147
+T-MAE       :    *     1.236   *     1.253
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.084898      0.086147
+T-Hier      :         0.7096       0.70935
+L2Reg       :          23016         23016
+Loss-Err    :    *    8.2582   *    8.5156
+Loss-Reg    :        0.73262       0.73237
+Loss        :    *    8.9908   *     9.248
+F-RMSE      :    *    3.2128        3.3908
+F-MAE       :         2.0501        2.0572
+F-RSQ       :        0.99571       0.99524
+Best Loss-Err so far:   8.5156
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 32
+Total epoch time:  1376.47 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 23:
+Learning rate:    0.0005
+Training time:  1265.14 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :          1.882        1.9191
+T-MAE       :         1.3662        1.3788
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.096077      0.096964
+T-Hier      :         0.6995       0.69992
+L2Reg       :          23400         23400
+Loss-Err    :         8.6099        8.8323
+Loss-Reg    :         0.7229       0.72332
+Loss        :         9.3328        9.5556
+F-RMSE      :         3.3453        3.5075
+F-MAE       :    *    2.0163        2.0269
+F-RSQ       :        0.99534        0.9949
+Best Loss-Err so far:   8.5156
+Epochs since last best: 1
+Current max epochs: 32
+Total epoch time:  1376.0 s
+__________________________________________________
+Epoch 24:
+Learning rate:    0.0005
+Training time:  1264.17 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *    1.6344   *     1.679
+T-MAE       :    *    1.1421   *    1.1564
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:    *  0.077794   *  0.078709
+T-Hier      :        0.69931       0.70045
+L2Reg       :          23939         23939
+Loss-Err    :    *    7.9494   *    8.0098
+Loss-Reg    :        0.72325       0.72438
+Loss        :    *    8.6726   *    8.7342
+F-RMSE      :    *    3.1938   *    3.1907
+F-MAE       :    *    1.9791   *    1.9837
+F-RSQ       :        0.99578       0.99578
+Best Loss-Err so far:   8.0098
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 34
+Total epoch time:  1374.7 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 25:
+Learning rate:    0.0005
+Training time:  1264.28 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.7428        1.7823
+T-MAE       :         1.2289        1.2483
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.082014      0.083178
+T-Hier      :        0.70548       0.70593
+L2Reg       :          24506         24506
+Loss-Err    :         8.1474        8.2896
+Loss-Reg    :        0.72999       0.73044
+Loss        :         8.8774        9.0201
+F-RMSE      :         3.2012         3.277
+F-MAE       :    *    1.9745   *     1.982
+F-RSQ       :        0.99575       0.99555
+Best Loss-Err so far:   8.0098
+Epochs since last best: 1
+Current max epochs: 34
+Total epoch time:  1374.93 s
+__________________________________________________
+Epoch 26:
+Learning rate:    0.0005
+Training time:  1263.74 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         2.1522        2.1926
+T-MAE       :         1.5509        1.5617
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:         0.1034       0.10416
+T-Hier      :        0.70051       0.70124
+L2Reg       :          25037         25037
+Loss-Err    :         8.8472           8.9
+Loss-Reg    :        0.72555       0.72628
+Loss        :         9.5727        9.6263
+F-RMSE      :         3.2152        3.2112
+F-MAE       :    *    1.9289   *    1.9345
+F-RSQ       :        0.99569       0.99573
+Best Loss-Err so far:   8.0098
+Epochs since last best: 2
+Current max epochs: 34
+Total epoch time:  1374.71 s
+__________________________________________________
+Epoch 27:
+Learning rate:    0.0005
+Training time:  1265.13 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.6508         1.685
+T-MAE       :    *    1.1244   *     1.145
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:    *  0.077659      0.079042
+T-Hier      :    *   0.68819   *   0.68977
+L2Reg       :          25579         25579
+Loss-Err    :    *    7.8193        8.0276
+Loss-Reg    :    *   0.71377   *   0.71535
+Loss        :    *    8.5331         8.743
+F-RMSE      :    *    3.1005         3.246
+F-MAE       :         1.9437        1.9516
+F-RSQ       :        0.99601       0.99564
+Best Loss-Err so far:   8.0098
+Epochs since last best: 3
+Current max epochs: 34
+Total epoch time:  1376.16 s
+__________________________________________________
+Epoch 28:
+Learning rate:    0.0005
+Training time:  1265.41 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *    1.5618   *    1.6043
+T-MAE       :    *    1.0975   *     1.114
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:    *  0.073217   *   0.07436
+T-Hier      :    *   0.66829   *   0.66864
+L2Reg       :          26048         26048
+Loss-Err    :    *    7.5896   *    7.7314
+Loss-Reg    :    *   0.69434   *   0.69469
+Loss        :    *    8.2839   *    8.4261
+F-RMSE      :    *    3.0289   *    3.1048
+F-MAE       :    *    1.9013   *    1.9082
+F-RSQ       :         0.9962       0.99601
+Best Loss-Err so far:   7.7314
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 38
+Total epoch time:  1376.03 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 29:
+Learning rate:    0.0005
+Training time:  1266.39 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.7862        1.8083
+T-MAE       :         1.2711        1.2852
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.085275      0.086219
+T-Hier      :        0.69401       0.69362
+L2Reg       :          26584         26584
+Loss-Err    :         8.1057         8.143
+Loss-Reg    :        0.72059        0.7202
+Loss        :         8.8263        8.8632
+F-RMSE      :         3.1488        3.1411
+F-MAE       :    *    1.8996        1.9084
+F-RSQ       :        0.99586       0.99591
+Best Loss-Err so far:   7.7314
+Epochs since last best: 1
+Current max epochs: 38
+Total epoch time:  1381.49 s
+__________________________________________________
+Epoch 30:
+Learning rate:    0.0005
+Training time:  1264.39 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *    1.5522         1.605
+T-MAE       :    *    1.0877   *    1.1066
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.074378       0.07562
+T-Hier      :    *   0.66783   *   0.66714
+L2Reg       :          27092         27092
+Loss-Err    :    *    7.5468   *    7.6355
+Loss-Reg    :        0.69493   *   0.69424
+Loss        :    *    8.2418   *    8.3298
+F-RMSE      :    *    3.0163   *     3.025
+F-MAE       :    *    1.8907   *     1.899
+F-RSQ       :        0.99622       0.99621
+Best Loss-Err so far:   7.6355
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 40
+Total epoch time:  1378.86 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 31:
+Learning rate:    0.0005
+Training time:  1260.74 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.6298        1.6715
+T-MAE       :         1.1439        1.1589
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.078017      0.078935
+T-Hier      :        0.67555       0.67699
+L2Reg       :          27534         27534
+Loss-Err    :         7.7524        7.8726
+Loss-Reg    :        0.70309       0.70452
+Loss        :         8.4555        8.5771
+F-RMSE      :         3.0535        3.1098
+F-MAE       :         1.9252        1.9323
+F-RSQ       :        0.99612       0.99599
+Best Loss-Err so far:   7.6355
+Epochs since last best: 1
+Current max epochs: 40
+Total epoch time:  1371.69 s
+__________________________________________________
+Epoch 32:
+Learning rate:    0.0005
+Training time:  1263.9 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         2.6093        2.6511
+T-MAE       :         1.9665        1.9855
+T-RSQ       :        0.99998       0.99998
+TperAtom MAE:        0.12738       0.12855
+T-Hier      :        0.68251       0.68275
+L2Reg       :          27873         27873
+Loss-Err    :         9.4961        9.6938
+Loss-Reg    :        0.71038       0.71063
+Loss        :         10.206        10.404
+F-RMSE      :    *    3.0033        3.1314
+F-MAE       :         1.9171        1.9258
+F-RSQ       :        0.99627       0.99594
+Best Loss-Err so far:   7.6355
+Epochs since last best: 2
+Current max epochs: 40
+Total epoch time:  1381.17 s
+__________________________________________________
+Epoch 33:
+Learning rate:    0.0005
+Training time:  1266.71 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.6837        1.7198
+T-MAE       :         1.1359        1.1531
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.074721      0.075726
+T-Hier      :        0.67876       0.67951
+L2Reg       :          28369         28369
+Loss-Err    :         7.7799        8.1158
+Loss-Reg    :        0.70713       0.70788
+Loss        :          8.487        8.8237
+F-RMSE      :         3.0933        3.3687
+F-MAE       :    *     1.867   *    1.8742
+F-RSQ       :        0.99601        0.9953
+Best Loss-Err so far:   7.6355
+Epochs since last best: 3
+Current max epochs: 40
+Total epoch time:  1380.34 s
+__________________________________________________
+Epoch 34:
+Learning rate:    0.0005
+Training time:  1263.32 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *     1.451   *    1.4907
+T-MAE       :    *   0.99688   *    1.0144
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:    *  0.068405   *  0.069557
+T-Hier      :    *   0.66169   *    0.6623
+L2Reg       :          28852         28852
+Loss-Err    :    *    7.2198   *     7.539
+Loss-Reg    :    *   0.69054   *   0.69115
+Loss        :    *    7.9103   *    8.2302
+F-RMSE      :    *    2.9198        3.1724
+F-MAE       :    *    1.8521   *    1.8616
+F-RSQ       :        0.99645       0.99583
+Best Loss-Err so far:    7.539
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 44
+Total epoch time:  1371.91 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 35:
+Learning rate:    0.0005
+Training time:  1257.43 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.7559        1.7849
+T-MAE       :         1.2728        1.2887
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.085533      0.086648
+T-Hier      :    *    0.6575   *   0.65753
+L2Reg       :          29312         29312
+Loss-Err    :          7.829        8.0453
+Loss-Reg    :    *   0.68682   *   0.68684
+Loss        :         8.5159        8.7321
+F-RMSE      :         2.9559        3.1193
+F-MAE       :    *    1.8445   *    1.8525
+F-RSQ       :        0.99636       0.99597
+Best Loss-Err so far:    7.539
+Epochs since last best: 1
+Current max epochs: 44
+Total epoch time:  1365.65 s
+__________________________________________________
+Epoch 36:
+Learning rate:    0.0005
+Training time:  1257.31 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.6438        1.6931
+T-MAE       :         1.2203        1.2408
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.083418       0.08484
+T-Hier      :    *   0.65413   *   0.65422
+L2Reg       :          29744         29744
+Loss-Err    :         7.6554        7.7812
+Loss-Reg    :    *   0.68387   *   0.68396
+Loss        :         8.3392        8.4652
+F-RMSE      :         2.9341   *    2.9817
+F-MAE       :         1.8572        1.8656
+F-RSQ       :        0.99642       0.99632
+Best Loss-Err so far:    7.539
+Epochs since last best: 2
+Current max epochs: 44
+Total epoch time:  1365.79 s
+__________________________________________________
+Epoch 37:
+Learning rate:    0.0005
+Training time:  1260.96 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         2.3499        2.3857
+T-MAE       :         1.8782        1.8946
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:        0.12267       0.12379
+T-Hier      :    *   0.65244   *   0.65218
+L2Reg       :          30262         30262
+Loss-Err    :         9.0161         9.088
+Loss-Reg    :    *   0.68271   *   0.68244
+Loss        :         9.6988        9.7704
+F-RMSE      :         2.9583   *    2.9661
+F-MAE       :    *    1.8297   *    1.8417
+F-RSQ       :        0.99636       0.99636
+Best Loss-Err so far:    7.539
+Epochs since last best: 3
+Current max epochs: 44
+Total epoch time:  1375.72 s
+__________________________________________________
+Epoch 38:
+Learning rate:    0.0005
+Training time:  1258.9 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :           1.53        1.5965
+T-MAE       :         1.0727        1.0923
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.073115      0.074366
+T-Hier      :        0.65272       0.65388
+L2Reg       :          30773         30773
+Loss-Err    :         7.3485        7.5495
+Loss-Reg    :        0.68349       0.68466
+Loss        :          8.032        8.2341
+F-RMSE      :    *    2.9175        3.0241
+F-MAE       :    *    1.8283   *    1.8365
+F-RSQ       :        0.99646       0.99621
+Best Loss-Err so far:    7.539
+Epochs since last best: 4
+Current max epochs: 44
+Total epoch time:  1368.7 s
+__________________________________________________
+Epoch 39:
+Learning rate:    0.0005
+Training time:  1259.97 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.4709         1.537
+T-MAE       :          1.027         1.049
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.068812      0.070268
+T-Hier      :    *   0.63961   *   0.63997
+L2Reg       :          31236         31236
+Loss-Err    :    *    7.1999   *    7.4185
+Loss-Reg    :    *   0.67085   *   0.67121
+Loss        :    *    7.8708   *    8.0897
+F-RMSE      :    *    2.8952        3.0138
+F-MAE       :    *    1.8068   *    1.8187
+F-RSQ       :        0.99652       0.99624
+Best Loss-Err so far:   7.4185
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 49
+Total epoch time:  1369.06 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 40:
+Learning rate:    0.0005
+Training time:  1260.44 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.6297        1.6651
+T-MAE       :         1.1591        1.1784
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:        0.07769      0.078971
+T-Hier      :    *   0.63816   *   0.63887
+L2Reg       :          31636         31636
+Loss-Err    :         7.7339        7.8234
+Loss-Reg    :    *    0.6698   *    0.6705
+Loss        :         8.4037        8.4939
+F-RMSE      :         3.1176        3.1451
+F-MAE       :         1.8274        1.8348
+F-RSQ       :        0.99596        0.9959
+Best Loss-Err so far:   7.4185
+Epochs since last best: 1
+Current max epochs: 49
+Total epoch time:  1378.72 s
+__________________________________________________
+Epoch 41:
+Learning rate:    0.0005
+Training time:  1260.69 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.5269        1.5678
+T-MAE       :         1.0605        1.0748
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.072557      0.073573
+T-Hier      :        0.64003       0.64059
+L2Reg       :          32080         32080
+Loss-Err    :         7.2608        7.5039
+Loss-Reg    :        0.67211       0.67267
+Loss        :          7.933        8.1766
+F-RMSE      :    *    2.8901        3.0703
+F-MAE       :    *    1.7832   *     1.791
+F-RSQ       :        0.99652       0.99609
+Best Loss-Err so far:   7.4185
+Epochs since last best: 2
+Current max epochs: 49
+Total epoch time:  1370.44 s
+__________________________________________________
+Epoch 42:
+Learning rate:    0.0005
+Training time:  1260.95 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :          2.637        2.6682
+T-MAE       :         2.0489         2.058
+T-RSQ       :        0.99998       0.99998
+TperAtom MAE:        0.13931       0.14013
+T-Hier      :        0.65394        0.6538
+L2Reg       :          32520         32520
+Loss-Err    :         9.4566        9.5387
+Loss-Reg    :        0.68646       0.68632
+Loss        :         10.143        10.225
+F-RMSE      :         2.9189   *    2.9521
+F-MAE       :         1.8518        1.8605
+F-RSQ       :        0.99645       0.99639
+Best Loss-Err so far:   7.4185
+Epochs since last best: 3
+Current max epochs: 49
+Total epoch time:  1371.78 s
+__________________________________________________
+Epoch 43:
+Learning rate:    0.0005
+Training time:  1260.43 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.4664        1.5127
+T-MAE       :         1.0214        1.0394
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:        0.06973      0.071012
+T-Hier      :    *   0.63781       0.63962
+L2Reg       :          32922         32922
+Loss-Err    :    *    7.1174   *    7.3672
+Loss-Reg    :        0.67073       0.67254
+Loss        :    *    7.7881   *    8.0398
+F-RMSE      :    *    2.8295        3.0078
+F-MAE       :         1.8001        1.8073
+F-RSQ       :        0.99669       0.99625
+Best Loss-Err so far:   7.3672
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 53
+Total epoch time:  1369.8 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 44:
+Learning rate:    0.0005
+Training time:  1257.56 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *    1.4311   *    1.4818
+T-MAE       :    *   0.99654        1.0183
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:    *  0.067063   *  0.068534
+T-Hier      :    *   0.62814   *   0.62929
+L2Reg       :          33318         33318
+Loss-Err    :         7.2554   *    7.2089
+Loss-Reg    :    *   0.66146   *   0.66261
+Loss        :         7.9169   *    7.8715
+F-RMSE      :         3.0509   *    2.9244
+F-MAE       :    *    1.7769   *    1.7844
+F-RSQ       :        0.99615       0.99646
+Best Loss-Err so far:   7.2089
+Epochs since last best: 0
+Current max epochs: 54
+Total epoch time:  1367.38 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 45:
+Learning rate:    0.0005
+Training time:  1261.87 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.4916        1.5375
+T-MAE       :         1.0377        1.0572
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.070222      0.071588
+T-Hier      :        0.63768       0.63874
+L2Reg       :          33680         33680
+Loss-Err    :         7.1304        7.2291
+Loss-Reg    :        0.67136       0.67242
+Loss        :         7.8018        7.9016
+F-RMSE      :    *    2.8227   *    2.8495
+F-MAE       :         1.7784        1.7849
+F-RSQ       :         0.9967       0.99664
+Best Loss-Err so far:   7.2089
+Epochs since last best: 1
+Current max epochs: 54
+Total epoch time:  1370.88 s
+__________________________________________________
+Epoch 46:
+Learning rate:    0.0005
+Training time:  1257.38 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :          1.479        1.5109
+T-MAE       :         1.0208         1.037
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.069757      0.070869
+T-Hier      :        0.64015       0.64056
+L2Reg       :          34007         34007
+Loss-Err    :         7.1689        7.3557
+Loss-Reg    :        0.67416       0.67457
+Loss        :         7.8431        8.0302
+F-RMSE      :         2.8839        3.0162
+F-MAE       :         1.7853        1.7916
+F-RSQ       :        0.99656       0.99623
+Best Loss-Err so far:   7.2089
+Epochs since last best: 2
+Current max epochs: 54
+Total epoch time:  1366.72 s
+__________________________________________________
+Epoch 47:
+Learning rate:    0.0005
+Training time:  1258.0 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.5784        1.6213
+T-MAE       :         1.0796        1.0974
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.073682      0.074959
+T-Hier      :        0.63467       0.63544
+L2Reg       :          34427         34427
+Loss-Err    :          7.462        7.6701
+Loss-Reg    :         0.6691       0.66987
+Loss        :         8.1311          8.34
+F-RMSE      :         3.0337        3.1736
+F-MAE       :    *    1.7703   *    1.7778
+F-RSQ       :        0.99617       0.99583
+Best Loss-Err so far:   7.2089
+Epochs since last best: 3
+Current max epochs: 54
+Total epoch time:  1367.88 s
+__________________________________________________
+Epoch 48:
+Learning rate:    0.0005
+Training time:  1260.05 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.4578        1.5012
+T-MAE       :    *   0.99006   *    1.0081
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.067616      0.068813
+T-Hier      :        0.63367       0.63552
+L2Reg       :          34772         34772
+Loss-Err    :    *     7.068   *    7.1178
+Loss-Reg    :        0.66845       0.67029
+Loss        :    *    7.7365   *     7.788
+F-RMSE      :         2.8734        2.8549
+F-MAE       :    *    1.7468   *    1.7536
+F-RSQ       :        0.99658       0.99662
+Best Loss-Err so far:   7.1178
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 58
+Total epoch time:  1369.11 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 49:
+Learning rate:    0.0005
+Training time:  1262.25 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.4495        1.5102
+T-MAE       :         1.0345        1.0564
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.071866      0.073279
+T-Hier      :        0.64178        0.6441
+L2Reg       :          35117         35117
+Loss-Err    :         7.1753        7.2774
+Loss-Reg    :         0.6769       0.67921
+Loss        :         7.8522        7.9566
+F-RMSE      :         2.9201        2.9294
+F-MAE       :         1.7712        1.7814
+F-RSQ       :        0.99646       0.99645
+Best Loss-Err so far:   7.1178
+Epochs since last best: 1
+Current max epochs: 58
+Total epoch time:  1370.81 s
+__________________________________________________
+Epoch 50:
+Learning rate:    0.0005
+Training time:  1259.36 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.4714        1.5125
+T-MAE       :         1.0079        1.0278
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.068662      0.069975
+T-Hier      :    *   0.62291   *    0.6243
+L2Reg       :          35425         35425
+Loss-Err    :    *    7.0092        7.1592
+Loss-Reg    :    *   0.65834   *   0.65973
+Loss        :    *    7.6675        7.8189
+F-RMSE      :    *     2.773        2.8542
+F-MAE       :         1.7568        1.7646
+F-RSQ       :         0.9968       0.99663
+Best Loss-Err so far:   7.1178
+Epochs since last best: 2
+Current max epochs: 58
+Total epoch time:  1368.59 s
+__________________________________________________
+Epoch 51:
+Learning rate:    0.0005
+Training time:  1259.51 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.6056        1.6676
+T-MAE       :         1.1851        1.2076
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:        0.07853      0.079945
+T-Hier      :    *   0.61884   *   0.62023
+L2Reg       :          35725         35725
+Loss-Err    :         7.2835        7.4466
+Loss-Reg    :    *   0.65456   *   0.65596
+Loss        :          7.938        8.1026
+F-RMSE      :    *    2.7415   *    2.8125
+F-MAE       :         1.7513        1.7589
+F-RSQ       :        0.99687       0.99672
+Best Loss-Err so far:   7.1178
+Epochs since last best: 3
+Current max epochs: 58
+Total epoch time:  1368.29 s
+__________________________________________________
+Epoch 52:
+Learning rate:    0.0005
+Training time:  1257.16 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.4473        1.5034
+T-MAE       :        0.99765        1.0181
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.068129      0.069449
+T-Hier      :        0.62753        0.6284
+L2Reg       :          36061         36061
+Loss-Err    :    *    6.9139   *    7.0625
+Loss-Reg    :        0.66359       0.66446
+Loss        :    *    7.5775   *     7.727
+F-RMSE      :    *    2.7311   *    2.7957
+F-MAE       :    *    1.7379   *    1.7453
+F-RSQ       :         0.9969       0.99676
+Best Loss-Err so far:   7.0625
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 62
+Total epoch time:  1365.53 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 53:
+Learning rate:    0.0005
+Training time:  1262.17 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *    1.4217        1.4911
+T-MAE       :         1.0011        1.0239
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.068797      0.070333
+T-Hier      :        0.62883       0.62815
+L2Reg       :          36380         36380
+Loss-Err    :          7.044        7.2022
+Loss-Reg    :        0.66521       0.66453
+Loss        :         7.7092        7.8667
+F-RMSE      :         2.8947        2.9506
+F-MAE       :    *    1.7265   *    1.7366
+F-RSQ       :        0.99651       0.99639
+Best Loss-Err so far:   7.0625
+Epochs since last best: 1
+Current max epochs: 62
+Total epoch time:  1374.83 s
+__________________________________________________
+Epoch 54:
+Learning rate:    0.0005
+Training time:  1257.64 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.4593        1.5164
+T-MAE       :         1.0386        1.0641
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.068951      0.070733
+T-Hier      :    *   0.61618   *    0.6165
+L2Reg       :          36596         36596
+Loss-Err    :    *    6.9132   *    7.0458
+Loss-Reg    :    *   0.65278   *    0.6531
+Loss        :    *    7.5659   *    7.6989
+F-RMSE      :    *     2.705   *    2.7458
+F-MAE       :    *    1.7102   *    1.7195
+F-RSQ       :        0.99695       0.99688
+Best Loss-Err so far:   7.0458
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 64
+Total epoch time:  1367.09 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 55:
+Learning rate:    0.0005
+Training time:  1259.48 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.4718         1.531
+T-MAE       :         1.0729        1.0951
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:        0.07354      0.075037
+T-Hier      :        0.62521       0.62605
+L2Reg       :          36968         36968
+Loss-Err    :    *    6.8821   *    7.0326
+Loss-Reg    :        0.66218       0.66302
+Loss        :    *    7.5443   *    7.6956
+F-RMSE      :    *    2.6486   *    2.7082
+F-MAE       :    *    1.6888   *    1.6983
+F-RSQ       :        0.99708       0.99696
+Best Loss-Err so far:   7.0326
+Epochs since last best: 0
+Current max epochs: 65
+Total epoch time:  1369.05 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 56:
+Learning rate:    0.0005
+Training time:  1261.76 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *    1.3586   *    1.4283
+T-MAE       :    *   0.94283   *   0.96561
+T-RSQ       :              1       0.99999
+TperAtom MAE:    *  0.063872   *   0.06539
+T-Hier      :          0.632       0.63262
+L2Reg       :          37297         37297
+Loss-Err    :    *    6.7386   *    6.8932
+Loss-Reg    :        0.66929       0.66991
+Loss        :    *    7.4078   *    7.5631
+F-RMSE      :          2.706        2.7606
+F-MAE       :         1.7311        1.7387
+F-RSQ       :        0.99696       0.99684
+Best Loss-Err so far:   6.8932
+Epochs since last best: 0
+Current max epochs: 66
+Total epoch time:  1371.09 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 57:
+Learning rate:    0.0005
+Training time:  1261.09 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.5137        1.5693
+T-MAE       :         1.1267        1.1495
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:         0.0769      0.078377
+T-Hier      :        0.62125       0.62161
+L2Reg       :          37627         37627
+Loss-Err    :         7.0149        7.1484
+Loss-Reg    :        0.65887       0.65924
+Loss        :         7.6738        7.8077
+F-RMSE      :         2.6729        2.7197
+F-MAE       :         1.7016          1.71
+F-RSQ       :        0.99704       0.99694
+Best Loss-Err so far:   6.8932
+Epochs since last best: 1
+Current max epochs: 66
+Total epoch time:  1370.48 s
+__________________________________________________
+Epoch 58:
+Learning rate:    0.0005
+Training time:  1258.73 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *    1.3477   *    1.4001
+T-MAE       :    *   0.93925   *   0.96004
+T-RSQ       :              1             1
+TperAtom MAE:    *  0.063582   *  0.064925
+T-Hier      :         0.6182       0.61826
+L2Reg       :          37956         37956
+Loss-Err    :         6.9099   *    6.8504
+Loss-Reg    :        0.65615       0.65621
+Loss        :          7.566   *    7.5066
+F-RMSE      :         2.9466        2.8052
+F-MAE       :    *    1.6764   *    1.6852
+F-RSQ       :        0.99638       0.99674
+Best Loss-Err so far:   6.8504
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 68
+Total epoch time:  1368.78 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 59:
+Learning rate:    0.0005
+Training time:  1260.71 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.4526         1.503
+T-MAE       :        0.99688        1.0166
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.066968      0.068239
+T-Hier      :    *   0.61586       0.61667
+L2Reg       :          38277         38277
+Loss-Err    :         6.8337        6.9374
+Loss-Reg    :        0.65414       0.65495
+Loss        :         7.4878        7.5924
+F-RMSE      :         2.6808   *     2.704
+F-MAE       :         1.7034        1.7139
+F-RSQ       :          0.997       0.99697
+Best Loss-Err so far:   6.8504
+Epochs since last best: 1
+Current max epochs: 68
+Total epoch time:  1369.41 s
+__________________________________________________
+Epoch 60:
+Learning rate:    0.0005
+Training time:  1260.1 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.5614         1.616
+T-MAE       :         1.0964        1.1179
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.071261      0.072739
+T-Hier      :    *   0.61219   *   0.61226
+L2Reg       :          38621         38621
+Loss-Err    :         7.0991        7.1065
+Loss-Reg    :    *   0.65081   *   0.65088
+Loss        :         7.7499        7.7573
+F-RMSE      :         2.7549   *    2.6801
+F-MAE       :         1.6863        1.6925
+F-RSQ       :        0.99686       0.99702
+Best Loss-Err so far:   6.8504
+Epochs since last best: 2
+Current max epochs: 68
+Total epoch time:  1369.61 s
+__________________________________________________
+Epoch 61:
+Learning rate:    0.0005
+Training time:  1260.6 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.3546          1.41
+T-MAE       :         0.9592       0.97888
+T-RSQ       :              1             1
+TperAtom MAE:       0.065928      0.067258
+T-Hier      :        0.63071       0.63132
+L2Reg       :          38948         38948
+Loss-Err    :    *    6.5856   *    6.7752
+Loss-Reg    :        0.66966       0.67027
+Loss        :    *    7.2553   *    7.4455
+F-RMSE      :    *    2.6085        2.7137
+F-MAE       :    *    1.6633   *    1.6727
+F-RSQ       :        0.99718       0.99695
+Best Loss-Err so far:   6.7752
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 71
+Total epoch time:  1373.1 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 62:
+Learning rate:    0.0005
+Training time:  1260.31 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *    1.3426        1.4063
+T-MAE       :    *   0.92135   *   0.94607
+T-RSQ       :              1             1
+TperAtom MAE:    *   0.06279   *  0.064422
+T-Hier      :        0.62747       0.62766
+L2Reg       :          39251         39251
+Loss-Err    :    *    6.5631   *    6.7122
+Loss-Reg    :        0.66672       0.66691
+Loss        :    *    7.2299   *    7.3792
+F-RMSE      :         2.6318        2.6818
+F-MAE       :         1.6674         1.678
+F-RSQ       :        0.99713       0.99702
+Best Loss-Err so far:   6.7122
+Epochs since last best: 0
+Current max epochs: 72
+Total epoch time:  1369.37 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 63:
+Learning rate:    0.0005
+Training time:  1260.48 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.5865        1.6345
+T-MAE       :         1.1573        1.1794
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.076293      0.077731
+T-Hier      :    *   0.61174   *    0.6119
+L2Reg       :          39563         39563
+Loss-Err    :         7.0555        7.2242
+Loss-Reg    :         0.6513       0.65147
+Loss        :         7.7068        7.8756
+F-RMSE      :         2.6361        2.7262
+F-MAE       :         1.6756         1.684
+F-RSQ       :        0.99713       0.99692
+Best Loss-Err so far:   6.7122
+Epochs since last best: 1
+Current max epochs: 72
+Total epoch time:  1369.07 s
+__________________________________________________
+Epoch 64:
+Learning rate:    0.0005
+Training time:  1257.95 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.4182        1.4724
+T-MAE       :         0.9908        1.0104
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.068213      0.069637
+T-Hier      :         0.6141       0.61449
+L2Reg       :          39866         39866
+Loss-Err    :          6.873        6.8806
+Loss-Reg    :        0.65397       0.65436
+Loss        :          7.527         7.535
+F-RMSE      :         2.7812        2.7064
+F-MAE       :         1.6828        1.6914
+F-RSQ       :        0.99679       0.99697
+Best Loss-Err so far:   6.7122
+Epochs since last best: 2
+Current max epochs: 72
+Total epoch time:  1366.53 s
+__________________________________________________
+Epoch 65:
+Learning rate:    0.0005
+Training time:  1258.02 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.4801         1.524
+T-MAE       :         1.0369        1.0547
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.071024      0.072178
+T-Hier      :    *   0.60678   *   0.60712
+L2Reg       :          40172         40172
+Loss-Err    :         6.9142        6.9088
+Loss-Reg    :    *   0.64695   *    0.6473
+Loss        :         7.5611        7.5561
+F-RMSE      :          2.737   *    2.6637
+F-MAE       :    *    1.6601   *    1.6664
+F-RSQ       :        0.99689       0.99706
+Best Loss-Err so far:   6.7122
+Epochs since last best: 3
+Current max epochs: 72
+Total epoch time:  1366.85 s
+__________________________________________________
+Epoch 66:
+Learning rate:    0.0005
+Training time:  1256.17 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.4849        1.5385
+T-MAE       :         1.0321         1.053
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.068615      0.070064
+T-Hier      :        0.60885       0.60995
+L2Reg       :          40458         40458
+Loss-Err    :          7.186        6.9714
+Loss-Reg    :        0.64931       0.65041
+Loss        :         7.8353        7.6218
+F-RMSE      :         3.0107        2.7127
+F-MAE       :    *    1.6582        1.6672
+F-RSQ       :        0.99622       0.99695
+Best Loss-Err so far:   6.7122
+Epochs since last best: 4
+Current max epochs: 72
+Total epoch time:  1367.4 s
+__________________________________________________
+Epoch 67:
+Learning rate:    0.0005
+Training time:  1256.95 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.7583        1.7992
+T-MAE       :         1.2959        1.3122
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:        0.08641      0.087503
+T-Hier      :        0.61739       0.61788
+L2Reg       :          40760         40760
+Loss-Err    :          7.316        7.4298
+Loss-Reg    :        0.65815       0.65864
+Loss        :         7.9741        8.0885
+F-RMSE      :    *     2.606   *    2.6529
+F-MAE       :    *    1.6558   *    1.6655
+F-RSQ       :        0.99717       0.99708
+Best Loss-Err so far:   6.7122
+Epochs since last best: 5
+Current max epochs: 72
+Total epoch time:  1371.36 s
+__________________________________________________
+Epoch 68:
+Learning rate:    0.0005
+Training time:  1261.27 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.5855         1.627
+T-MAE       :         1.0899        1.1085
+T-RSQ       :        0.99999       0.99999
+TperAtom MAE:       0.072613      0.073804
+T-Hier      :        0.61932       0.62016
+L2Reg       :          41086         41086
+Loss-Err    :         6.9961         7.087
+Loss-Reg    :         0.6604       0.66125
+Loss        :         7.6565        7.7482
+F-RMSE      :         2.6474          2.67
+F-MAE       :         1.6733        1.6815
+F-RSQ       :        0.99709       0.99705
+Best Loss-Err so far:   6.7122
+Epoch 00069: reducing learning rate of group 0 to 2.5000e-04.
+Epochs since last best: 6
+Current max epochs: 72
+Total epoch time:  1370.3 s
+__________________________________________________
+Epoch 69:
+Learning rate:   0.00025
+Training time:  1256.87 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *    1.1944   *    1.2566
+T-MAE       :    *   0.81188   *    0.8373
+T-RSQ       :              1             1
+TperAtom MAE:    *  0.054628   *  0.056335
+T-Hier      :    *   0.59745   *   0.59937
+L2Reg       :          40971         40971
+Loss-Err    :    *    6.0121   *    6.1554
+Loss-Reg    :    *   0.63842   *   0.64034
+Loss        :    *    6.6506   *    6.7958
+F-RMSE      :    *    2.4482   *    2.4939
+F-MAE       :    *    1.5577   *    1.5677
+F-RSQ       :        0.99752       0.99742
+Best Loss-Err so far:   6.1554
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 79
+Total epoch time:  1365.89 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 70:
+Learning rate:   0.00025
+Training time:  1257.46 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.3528        1.4189
+T-MAE       :        0.94892       0.97269
+T-RSQ       :              1       0.99999
+TperAtom MAE:       0.062558      0.064187
+T-Hier      :         0.6016       0.60179
+L2Reg       :          40888         40888
+Loss-Err    :         6.2979        6.4597
+Loss-Reg    :        0.64248       0.64268
+Loss        :         6.9404        7.1024
+F-RMSE      :    *    2.4393        2.4996
+F-MAE       :    *    1.5569        1.5685
+F-RSQ       :        0.99752       0.99741
+Best Loss-Err so far:   6.1554
+Epochs since last best: 1
+Current max epochs: 79
+Total epoch time:  1366.91 s
+__________________________________________________
+Epoch 71:
+Learning rate:   0.00025
+Training time:  1260.12 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :          1.341         1.406
+T-MAE       :        0.99618        1.0198
+T-RSQ       :              1             1
+TperAtom MAE:       0.066567      0.068154
+T-Hier      :    *    0.5928   *   0.59277
+L2Reg       :          40824         40824
+Loss-Err    :         6.3197        6.4548
+Loss-Reg    :    *   0.63362   *    0.6336
+Loss        :         6.9533        7.0884
+F-RMSE      :    *    2.4351   *    2.4724
+F-MAE       :    *    1.5474   *    1.5566
+F-RSQ       :        0.99754       0.99747
+Best Loss-Err so far:   6.1554
+Epochs since last best: 2
+Current max epochs: 79
+Total epoch time:  1369.02 s
+__________________________________________________
+Epoch 72:
+Learning rate:   0.00025
+Training time:  1257.21 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.3209        1.3904
+T-MAE       :        0.95318       0.97849
+T-RSQ       :              1             1
+TperAtom MAE:       0.064077      0.065705
+T-Hier      :        0.59378       0.59518
+L2Reg       :          40783         40783
+Loss-Err    :         6.2502        6.4096
+Loss-Reg    :        0.63456       0.63596
+Loss        :         6.8848        7.0456
+F-RMSE      :    *    2.4284         2.482
+F-MAE       :         1.5477        1.5588
+F-RSQ       :        0.99754       0.99745
+Best Loss-Err so far:   6.1554
+Epochs since last best: 3
+Current max epochs: 79
+Total epoch time:  1366.38 s
+__________________________________________________
+Epoch 73:
+Learning rate:   0.00025
+Training time:  1257.55 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.2551        1.3222
+T-MAE       :        0.85147       0.87529
+T-RSQ       :              1             1
+TperAtom MAE:       0.057755      0.059391
+T-Hier      :        0.59759       0.59749
+L2Reg       :          40759         40759
+Loss-Err    :         6.0702        6.2432
+Loss-Reg    :        0.63835       0.63825
+Loss        :         6.7085        6.8814
+F-RMSE      :    *    2.4206        2.4913
+F-MAE       :    *     1.543   *    1.5543
+F-RSQ       :        0.99757       0.99743
+Best Loss-Err so far:   6.1554
+Epochs since last best: 4
+Current max epochs: 79
+Total epoch time:  1366.26 s
+__________________________________________________
+Epoch 74:
+Learning rate:   0.00025
+Training time:  1257.27 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.2449        1.3129
+T-MAE       :        0.86671       0.89455
+T-RSQ       :              1             1
+TperAtom MAE:       0.058849      0.060764
+T-Hier      :    *   0.59102       0.59285
+L2Reg       :          40727         40727
+Loss-Err    :         6.0805        6.2815
+Loss-Reg    :    *   0.63175   *   0.63357
+Loss        :         6.7123        6.9151
+F-RMSE      :          2.427        2.5207
+F-MAE       :    *     1.542   *    1.5534
+F-RSQ       :        0.99755       0.99737
+Best Loss-Err so far:   6.1554
+Epochs since last best: 5
+Current max epochs: 79
+Total epoch time:  1372.51 s
+__________________________________________________
+Epoch 75:
+Learning rate:   0.00025
+Training time:  1261.33 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *    1.1434   *    1.2229
+T-MAE       :    *   0.78858   *   0.81924
+T-RSQ       :              1             1
+TperAtom MAE:    *  0.053227   *  0.055175
+T-Hier      :        0.59429       0.59678
+L2Reg       :          40707         40707
+Loss-Err    :    *    5.9216   *    6.0348
+Loss-Reg    :          0.635       0.63749
+Loss        :    *    6.5566   *    6.6723
+F-RMSE      :          2.461   *    2.4524
+F-MAE       :    *    1.5286   *    1.5404
+F-RSQ       :         0.9975       0.99751
+Best Loss-Err so far:   6.0348
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 85
+Total epoch time:  1375.3 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 76:
+Learning rate:   0.00025
+Training time:  1256.87 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :          1.154         1.238
+T-MAE       :    *   0.78803   *   0.81754
+T-RSQ       :              1             1
+TperAtom MAE:       0.053447      0.055335
+T-Hier      :        0.59247       0.59447
+L2Reg       :          40692         40692
+Loss-Err    :    *    5.8616        6.0584
+Loss-Reg    :        0.63316       0.63516
+Loss        :    *    6.4948        6.6936
+F-RMSE      :    *    2.3952        2.4662
+F-MAE       :    *    1.5243   *    1.5367
+F-RSQ       :        0.99762       0.99748
+Best Loss-Err so far:   6.0348
+Epochs since last best: 1
+Current max epochs: 85
+Total epoch time:  1366.06 s
+__________________________________________________
+Epoch 77:
+Learning rate:   0.00025
+Training time:  1257.49 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.3883        1.4541
+T-MAE       :        0.98239        1.0052
+T-RSQ       :              1       0.99999
+TperAtom MAE:       0.066299      0.067714
+T-Hier      :    *   0.59058   *   0.59238
+L2Reg       :          40683         40683
+Loss-Err    :         6.3204        6.4566
+Loss-Reg    :    *   0.63126   *   0.63306
+Loss        :         6.9517        7.0897
+F-RMSE      :         2.4215        2.4577
+F-MAE       :         1.5283        1.5396
+F-RSQ       :        0.99757        0.9975
+Best Loss-Err so far:   6.0348
+Epochs since last best: 2
+Current max epochs: 85
+Total epoch time:  1367.14 s
+__________________________________________________
+Epoch 78:
+Learning rate:   0.00025
+Training time:  1257.83 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.3859        1.4464
+T-MAE       :         1.0107        1.0347
+T-RSQ       :              1       0.99999
+TperAtom MAE:       0.068174      0.069726
+T-Hier      :        0.60089       0.60043
+L2Reg       :          40666         40666
+Loss-Err    :          6.325        6.4762
+Loss-Reg    :        0.64156       0.64109
+Loss        :         6.9665        7.1173
+F-RMSE      :         2.3972        2.4531
+F-MAE       :         1.5312         1.542
+F-RSQ       :        0.99761       0.99751
+Best Loss-Err so far:   6.0348
+Epochs since last best: 3
+Current max epochs: 85
+Total epoch time:  1368.86 s
+__________________________________________________
+Epoch 79:
+Learning rate:   0.00025
+Training time:  1256.3 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.1998        1.2503
+T-MAE       :        0.80972       0.83927
+T-RSQ       :              1             1
+TperAtom MAE:       0.054239       0.05606
+T-Hier      :        0.59563       0.59779
+L2Reg       :          40653         40653
+Loss-Err    :         5.9024        6.0554
+Loss-Reg    :        0.63628       0.63844
+Loss        :         6.5386        6.6939
+F-RMSE      :    *    2.3757   *    2.4366
+F-MAE       :    *    1.5172   *    1.5293
+F-RSQ       :        0.99766       0.99754
+Best Loss-Err so far:   6.0348
+Epochs since last best: 4
+Current max epochs: 85
+Total epoch time:  1367.26 s
+__________________________________________________
+Epoch 80:
+Learning rate:   0.00025
+Training time:  1256.48 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.2657        1.3258
+T-MAE       :         0.8871       0.91048
+T-RSQ       :              1             1
+TperAtom MAE:        0.05907      0.060613
+T-Hier      :        0.59201        0.5927
+L2Reg       :          40646         40646
+Loss-Err    :         6.0543        6.1804
+Loss-Reg    :        0.63266       0.63334
+Loss        :         6.6869        6.8138
+F-RMSE      :         2.3882   *    2.4217
+F-MAE       :    *    1.5132   *    1.5224
+F-RSQ       :        0.99763       0.99757
+Best Loss-Err so far:   6.0348
+Epochs since last best: 5
+Current max epochs: 85
+Total epoch time:  1367.42 s
+__________________________________________________
+Epoch 81:
+Learning rate:   0.00025
+Training time:  1256.36 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.3326        1.4043
+T-MAE       :        0.97671        1.0026
+T-RSQ       :              1             1
+TperAtom MAE:       0.064394       0.06607
+T-Hier      :    *   0.58623   *   0.58683
+L2Reg       :          40660         40660
+Loss-Err    :         6.1584         6.337
+Loss-Reg    :    *   0.62689   *   0.62749
+Loss        :         6.7853        6.9645
+F-RMSE      :    *    2.3488   *    2.4158
+F-MAE       :    *    1.5004   *    1.5142
+F-RSQ       :         0.9977       0.99758
+Best Loss-Err so far:   6.0348
+Epoch 00082: reducing learning rate of group 0 to 1.2500e-04.
+Epochs since last best: 6
+Current max epochs: 85
+Total epoch time:  1365.63 s
+__________________________________________________
+Epoch 82:
+Learning rate:  0.000125
+Training time:  1259.26 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.1947        1.2759
+T-MAE       :        0.81861        0.8454
+T-RSQ       :              1             1
+TperAtom MAE:       0.053601       0.05533
+T-Hier      :        0.59164       0.59236
+L2Reg       :          40585         40585
+Loss-Err    :    *     5.797   *    5.9785
+Loss-Reg    :        0.63223       0.63295
+Loss        :    *    6.4292   *    6.6114
+F-RMSE      :    *    2.3149   *    2.3756
+F-MAE       :    *    1.4687   *    1.4817
+F-RSQ       :        0.99777       0.99766
+Best Loss-Err so far:   5.9785
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 92
+Total epoch time:  1367.87 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 83:
+Learning rate:  0.000125
+Training time:  1262.0 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.1724        1.2531
+T-MAE       :        0.83072       0.85877
+T-RSQ       :              1             1
+TperAtom MAE:        0.05508      0.056861
+T-Hier      :    *   0.58557   *    0.5859
+L2Reg       :          40518         40518
+Loss-Err    :    *    5.7634   *    5.9447
+Loss-Reg    :    *   0.62609   *   0.62642
+Loss        :    *    6.3895   *    6.5712
+F-RMSE      :    *    2.2964   *    2.3562
+F-MAE       :    *    1.4639   *    1.4766
+F-RSQ       :        0.99781        0.9977
+Best Loss-Err so far:   5.9447
+Epochs since last best: 0
+Current max epochs: 93
+Total epoch time:  1372.21 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 84:
+Learning rate:  0.000125
+Training time:  1260.23 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *    1.0472   *    1.1406
+T-MAE       :    *   0.70718   *   0.73753
+T-RSQ       :              1             1
+TperAtom MAE:    *  0.047153   *  0.049158
+T-Hier      :    *   0.58497       0.58627
+L2Reg       :          40450         40450
+Loss-Err    :    *    5.5058   *    5.7025
+Loss-Reg    :    *   0.62542       0.62672
+Loss        :    *    6.1312   *    6.3292
+F-RMSE      :    *    2.2919   *    2.3526
+F-MAE       :    *    1.4595   *    1.4717
+F-RSQ       :        0.99782       0.99771
+Best Loss-Err so far:   5.7025
+Epochs since last best: 0
+Current max epochs: 94
+Total epoch time:  1369.78 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 85:
+Learning rate:  0.000125
+Training time:  1257.5 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.0478   *    1.1326
+T-MAE       :    *   0.70503   *   0.73632
+T-RSQ       :              1             1
+TperAtom MAE:    *   0.04711   *  0.049119
+T-Hier      :        0.58596       0.58609
+L2Reg       :          40386         40386
+Loss-Err    :    *     5.503   *    5.6953
+Loss-Reg    :        0.62635       0.62648
+Loss        :    *    6.1293   *    6.3218
+F-RMSE      :    *    2.2908        2.3549
+F-MAE       :    *    1.4593   *    1.4715
+F-RSQ       :        0.99783        0.9977
+Best Loss-Err so far:   5.6953
+Epochs since last best: 0
+Current max epochs: 95
+Total epoch time:  1366.82 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 86:
+Learning rate:  0.000125
+Training time:  1261.65 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.0851        1.1749
+T-MAE       :        0.74793        0.7778
+T-RSQ       :              1             1
+TperAtom MAE:       0.050154      0.052107
+T-Hier      :        0.58723       0.58708
+L2Reg       :          40320         40320
+Loss-Err    :         5.5805        5.7645
+Loss-Reg    :        0.62755        0.6274
+Loss        :          6.208        6.3919
+F-RMSE      :          2.291   *    2.3444
+F-MAE       :    *    1.4564   *    1.4674
+F-RSQ       :        0.99782       0.99772
+Best Loss-Err so far:   5.6953
+Epochs since last best: 1
+Current max epochs: 95
+Total epoch time:  1370.31 s
+__________________________________________________
+Epoch 87:
+Learning rate:  0.000125
+Training time:  1260.86 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.0556        1.1493
+T-MAE       :        0.73548       0.76736
+T-RSQ       :              1             1
+TperAtom MAE:       0.049601      0.051619
+T-Hier      :    *    0.5834   *   0.58316
+L2Reg       :          40263         40263
+Loss-Err    :         5.5207        5.7196
+Loss-Reg    :    *   0.62366   *   0.62343
+Loss        :         6.1444         6.343
+F-RMSE      :    *     2.278   *    2.3389
+F-MAE       :    *    1.4516   *     1.464
+F-RSQ       :        0.99785       0.99773
+Best Loss-Err so far:   5.6953
+Epochs since last best: 2
+Current max epochs: 95
+Total epoch time:  1369.61 s
+__________________________________________________
+Epoch 88:
+Learning rate:  0.000125
+Training time:  1255.94 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.0524        1.1405
+T-MAE       :        0.72368       0.75147
+T-RSQ       :              1             1
+TperAtom MAE:       0.048917      0.050724
+T-Hier      :        0.58634       0.58622
+L2Reg       :          40211         40211
+Loss-Err    :         5.5123        5.7083
+Loss-Reg    :        0.62655       0.62643
+Loss        :         6.1388        6.3347
+F-RMSE      :         2.2824        2.3506
+F-MAE       :         1.4538        1.4657
+F-RSQ       :        0.99784       0.99771
+Best Loss-Err so far:   5.6953
+Epochs since last best: 3
+Current max epochs: 95
+Total epoch time:  1365.53 s
+__________________________________________________
+Epoch 89:
+Learning rate:  0.000125
+Training time:  1256.61 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *    1.0323   *    1.1299
+T-MAE       :    *   0.70421        0.7374
+T-RSQ       :              1             1
+TperAtom MAE:       0.047122      0.049223
+T-Hier      :        0.58521       0.58705
+L2Reg       :          40154         40154
+Loss-Err    :    *    5.4817   *    5.6925
+Loss-Reg    :        0.62536        0.6272
+Loss        :    *     6.107   *    6.3197
+F-RMSE      :         2.2877        2.3546
+F-MAE       :         1.4574        1.4707
+F-RSQ       :        0.99783        0.9977
+Best Loss-Err so far:   5.6925
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 99
+Total epoch time:  1366.6 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 90:
+Learning rate:  0.000125
+Training time:  1261.48 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.0737        1.1688
+T-MAE       :        0.74688        0.7798
+T-RSQ       :              1             1
+TperAtom MAE:       0.049668      0.051788
+T-Hier      :    *   0.58013   *   0.58129
+L2Reg       :          40105         40105
+Loss-Err    :          5.539        5.7392
+Loss-Reg    :    *   0.62024   *   0.62139
+Loss        :         6.1592        6.3606
+F-RMSE      :    *    2.2714   *    2.3322
+F-MAE       :    *     1.447   *    1.4584
+F-RSQ       :        0.99785       0.99775
+Best Loss-Err so far:   5.6925
+Epochs since last best: 1
+Current max epochs: 99
+Total epoch time:  1370.67 s
+__________________________________________________
+Epoch 91:
+Learning rate:  0.000125
+Training time:  1257.01 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.1209         1.206
+T-MAE       :        0.77733       0.80784
+T-RSQ       :              1             1
+TperAtom MAE:       0.051448      0.053439
+T-Hier      :        0.58181       0.58206
+L2Reg       :          40061         40061
+Loss-Err    :         5.6182        5.8289
+Loss-Reg    :        0.62187       0.62212
+Loss        :           6.24         6.451
+F-RMSE      :         2.2727        2.3533
+F-MAE       :         1.4473        1.4618
+F-RSQ       :        0.99785       0.99771
+Best Loss-Err so far:   5.6925
+Epochs since last best: 2
+Current max epochs: 99
+Total epoch time:  1366.75 s
+__________________________________________________
+Epoch 92:
+Learning rate:  0.000125
+Training time:  1260.33 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *    1.0264   *    1.1261
+T-MAE       :    *    0.6965   *   0.72975
+T-RSQ       :              1             1
+TperAtom MAE:    *  0.046519   *  0.048701
+T-Hier      :        0.58149       0.58221
+L2Reg       :          40012         40012
+Loss-Err    :    *    5.4256   *    5.6386
+Loss-Reg    :         0.6215       0.62223
+Loss        :    *    6.0471   *    6.2608
+F-RMSE      :    *    2.2627   *    2.3281
+F-MAE       :    *      1.44   *    1.4546
+F-RSQ       :        0.99787       0.99775
+Best Loss-Err so far:   5.6386
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 102
+Total epoch time:  1369.98 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 93:
+Learning rate:  0.000125
+Training time:  1257.18 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.0849        1.1717
+T-MAE       :        0.75045       0.77807
+T-RSQ       :              1             1
+TperAtom MAE:       0.050501       0.05231
+T-Hier      :        0.58452       0.58458
+L2Reg       :          39967         39967
+Loss-Err    :         5.5509        5.7454
+Loss-Reg    :        0.62449       0.62455
+Loss        :         6.1754          6.37
+F-RMSE      :         2.2654         2.333
+F-MAE       :         1.4503        1.4626
+F-RSQ       :        0.99787       0.99775
+Best Loss-Err so far:   5.6386
+Epochs since last best: 1
+Current max epochs: 102
+Total epoch time:  1366.3 s
+__________________________________________________
+Epoch 94:
+Learning rate:  0.000125
+Training time:  1257.1 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.0593        1.1551
+T-MAE       :         0.7284        0.7591
+T-RSQ       :              1             1
+TperAtom MAE:       0.049019      0.050991
+T-Hier      :        0.59057       0.59195
+L2Reg       :          39918         39918
+Loss-Err    :         5.5112        5.6893
+Loss-Reg    :        0.63049       0.63186
+Loss        :         6.1417        6.3212
+F-RMSE      :         2.2806   *    2.3215
+F-MAE       :         1.4429   *    1.4536
+F-RSQ       :        0.99784       0.99777
+Best Loss-Err so far:   5.6386
+Epochs since last best: 2
+Current max epochs: 102
+Total epoch time:  1366.67 s
+__________________________________________________
+Epoch 95:
+Learning rate:  0.000125
+Training time:  1256.84 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.1113        1.1961
+T-MAE       :        0.78168       0.81283
+T-RSQ       :              1             1
+TperAtom MAE:        0.05206      0.054053
+T-Hier      :        0.58106        0.5819
+L2Reg       :          39872         39872
+Loss-Err    :         5.6336        5.7862
+Loss-Reg    :        0.62093       0.62177
+Loss        :         6.2546         6.408
+F-RMSE      :         2.3023        2.3277
+F-MAE       :    *    1.4383   *    1.4496
+F-RSQ       :         0.9978       0.99776
+Best Loss-Err so far:   5.6386
+Epochs since last best: 3
+Current max epochs: 102
+Total epoch time:  1365.5 s
+__________________________________________________
+Epoch 96:
+Learning rate:  0.000125
+Training time:  1256.21 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.0643        1.1593
+T-MAE       :        0.72976       0.76063
+T-RSQ       :              1             1
+TperAtom MAE:       0.048834      0.050815
+T-Hier      :        0.58157       0.58225
+L2Reg       :          39832         39832
+Loss-Err    :          5.483        5.6915
+Loss-Reg    :         0.6214       0.62208
+Loss        :         6.1044        6.3135
+F-RMSE      :    *    2.2522   *    2.3208
+F-MAE       :    *    1.4367        1.4507
+F-RSQ       :         0.9979       0.99777
+Best Loss-Err so far:   5.6386
+Epochs since last best: 4
+Current max epochs: 102
+Total epoch time:  1365.37 s
+__________________________________________________
+Epoch 97:
+Learning rate:  0.000125
+Training time:  1256.67 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.0369        1.1274
+T-MAE       :        0.70042       0.73239
+T-RSQ       :              1             1
+TperAtom MAE:       0.046886      0.048922
+T-Hier      :        0.58215       0.58297
+L2Reg       :          39796         39796
+Loss-Err    :    *     5.422   *    5.6225
+Loss-Reg    :        0.62194       0.62277
+Loss        :    *     6.044   *    6.2452
+F-RMSE      :    *    2.2498   *    2.3136
+F-MAE       :    *    1.4349   *    1.4491
+F-RSQ       :        0.99789       0.99778
+Best Loss-Err so far:   5.6225
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 107
+Total epoch time:  1365.3 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 98:
+Learning rate:  0.000125
+Training time:  1256.68 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.0409        1.1319
+T-MAE       :        0.71285       0.74463
+T-RSQ       :              1             1
+TperAtom MAE:       0.048126      0.050179
+T-Hier      :        0.58599       0.58688
+L2Reg       :          39754         39754
+Loss-Err    :         5.4478        5.6526
+Loss-Reg    :        0.62574       0.62663
+Loss        :         6.0735        6.2793
+F-RMSE      :         2.2569        2.3259
+F-MAE       :         1.4372        1.4502
+F-RSQ       :        0.99788       0.99776
+Best Loss-Err so far:   5.6225
+Epochs since last best: 1
+Current max epochs: 107
+Total epoch time:  1365.44 s
+__________________________________________________
+Epoch 99:
+Learning rate:  0.000125
+Training time:  1257.63 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.0912        1.1859
+T-MAE       :        0.77466       0.80681
+T-RSQ       :              1             1
+TperAtom MAE:       0.052711      0.054744
+T-Hier      :        0.60165       0.60348
+L2Reg       :          39716         39716
+Loss-Err    :         5.5363         5.748
+Loss-Reg    :        0.64137        0.6432
+Loss        :         6.1777        6.3912
+F-RMSE      :    *    2.2401   *    2.3107
+F-MAE       :    *    1.4303   *    1.4446
+F-RSQ       :        0.99791       0.99779
+Best Loss-Err so far:   5.6225
+Epochs since last best: 2
+Current max epochs: 107
+Total epoch time:  1367.15 s
+__________________________________________________
+Epoch 100:
+Learning rate:  0.000125
+Training time:  1256.52 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.0427         1.131
+T-MAE       :        0.70466       0.73781
+T-RSQ       :              1             1
+TperAtom MAE:       0.047569      0.049636
+T-Hier      :         0.5826        0.5831
+L2Reg       :          39686         39686
+Loss-Err    :          5.427        5.6232
+Loss-Reg    :        0.62228       0.62278
+Loss        :         6.0493         6.246
+F-RMSE      :           2.25        2.3122
+F-MAE       :    *    1.4297   *    1.4422
+F-RSQ       :        0.99789       0.99779
+Best Loss-Err so far:   5.6225
+Epochs since last best: 3
+Current max epochs: 107
+Total epoch time:  1367.3 s
+__________________________________________________
+Epoch 101:
+Learning rate:  0.000125
+Training time:  1261.29 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.0619         1.145
+T-MAE       :        0.71277       0.74469
+T-RSQ       :              1             1
+TperAtom MAE:       0.047812      0.049828
+T-Hier      :        0.58201       0.58308
+L2Reg       :          39646         39646
+Loss-Err    :         5.4742        5.6473
+Loss-Reg    :        0.62165       0.62273
+Loss        :         6.0958          6.27
+F-RMSE      :         2.2676        2.3129
+F-MAE       :         1.4319        1.4446
+F-RSQ       :        0.99786       0.99778
+Best Loss-Err so far:   5.6225
+Epochs since last best: 4
+Current max epochs: 107
+Total epoch time:  1371.03 s
+__________________________________________________
+Epoch 102:
+Learning rate:  0.000125
+Training time:  1257.41 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.0544        1.1451
+T-MAE       :        0.71785        0.7499
+T-RSQ       :              1             1
+TperAtom MAE:       0.048367      0.050482
+T-Hier      :    *   0.57999   *   0.58039
+L2Reg       :          39614         39614
+Loss-Err    :         5.4546        5.6619
+Loss-Reg    :    *   0.61961   *      0.62
+Loss        :         6.0742        6.2819
+F-RMSE      :         2.2475        2.3185
+F-MAE       :         1.4349        1.4483
+F-RSQ       :         0.9979       0.99777
+Best Loss-Err so far:   5.6225
+Epochs since last best: 5
+Current max epochs: 107
+Total epoch time:  1366.46 s
+__________________________________________________
+Epoch 103:
+Learning rate:  0.000125
+Training time:  1257.05 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *    1.0134   *    1.1088
+T-MAE       :    *    0.6857   *   0.71668
+T-RSQ       :              1             1
+TperAtom MAE:    *  0.045858   *   0.04791
+T-Hier      :        0.58298       0.58233
+L2Reg       :          39579         39579
+Loss-Err    :    *    5.3484   *    5.5591
+Loss-Reg    :        0.62256        0.6219
+Loss        :    *     5.971   *     6.181
+F-RMSE      :    *    2.2313   *    2.3027
+F-MAE       :    *    1.4181   *    1.4308
+F-RSQ       :        0.99794        0.9978
+Best Loss-Err so far:   5.5591
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 113
+Total epoch time:  1366.01 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 104:
+Learning rate:  0.000125
+Training time:  1256.41 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.3199        1.3943
+T-MAE       :        0.99678        1.0201
+T-RSQ       :              1             1
+TperAtom MAE:       0.067004      0.068498
+T-Hier      :        0.58472       0.58514
+L2Reg       :          39549         39549
+Loss-Err    :         5.9777        6.1457
+Loss-Reg    :        0.62427       0.62469
+Loss        :          6.602        6.7704
+F-RMSE      :         2.2373   *    2.2974
+F-MAE       :         1.4237        1.4339
+F-RSQ       :        0.99792       0.99781
+Best Loss-Err so far:   5.5591
+Epochs since last best: 1
+Current max epochs: 113
+Total epoch time:  1364.79 s
+__________________________________________________
+Epoch 105:
+Learning rate:  0.000125
+Training time:  1256.75 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :          1.055        1.1492
+T-MAE       :        0.71886       0.75063
+T-RSQ       :              1             1
+TperAtom MAE:       0.048422      0.050472
+T-Hier      :    *   0.57899       0.58058
+L2Reg       :          39517         39517
+Loss-Err    :          5.455        5.6672
+Loss-Reg    :    *    0.6185       0.62009
+Loss        :         6.0735        6.2873
+F-RMSE      :         2.2458        2.3187
+F-MAE       :         1.4354        1.4486
+F-RSQ       :         0.9979       0.99777
+Best Loss-Err so far:   5.5591
+Epochs since last best: 2
+Current max epochs: 113
+Total epoch time:  1365.7 s
+__________________________________________________
+Epoch 106:
+Learning rate:  0.000125
+Training time:  1260.79 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.0414        1.1435
+T-MAE       :        0.70564       0.74051
+T-RSQ       :              1             1
+TperAtom MAE:       0.047258      0.049466
+T-Hier      :          0.585       0.58647
+L2Reg       :          39487         39487
+Loss-Err    :         5.4125        5.6407
+Loss-Reg    :        0.62448       0.62596
+Loss        :          6.037        6.2666
+F-RMSE      :         2.2355        2.3116
+F-MAE       :         1.4301        1.4451
+F-RSQ       :        0.99793       0.99779
+Best Loss-Err so far:   5.5591
+Epochs since last best: 3
+Current max epochs: 113
+Total epoch time:  1370.47 s
+__________________________________________________
+Epoch 107:
+Learning rate:  0.000125
+Training time:  1256.46 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.0269        1.1118
+T-MAE       :         0.6924       0.72191
+T-RSQ       :              1             1
+TperAtom MAE:       0.046529      0.048473
+T-Hier      :    *   0.57843   *   0.57789
+L2Reg       :          39454         39454
+Loss-Err    :         5.3685        5.5688
+Loss-Reg    :    *   0.61788   *   0.61734
+Loss        :         5.9863        6.1861
+F-RMSE      :    *    2.2304        2.3034
+F-MAE       :         1.4188        1.4316
+F-RSQ       :        0.99792        0.9978
+Best Loss-Err so far:   5.5591
+Epochs since last best: 4
+Current max epochs: 113
+Total epoch time:  1365.39 s
+__________________________________________________
+Epoch 108:
+Learning rate:  0.000125
+Training time:  1256.28 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.1283        1.2108
+T-MAE       :        0.79125       0.82002
+T-RSQ       :              1             1
+TperAtom MAE:        0.05236      0.054298
+T-Hier      :        0.58078       0.58124
+L2Reg       :          39430         39430
+Loss-Err    :         5.6104        5.7906
+Loss-Reg    :        0.62021       0.62067
+Loss        :         6.2306        6.4113
+F-RMSE      :         2.2568        2.3146
+F-MAE       :         1.4341        1.4452
+F-RSQ       :        0.99788       0.99778
+Best Loss-Err so far:   5.5591
+Epochs since last best: 5
+Current max epochs: 113
+Total epoch time:  1365.83 s
+__________________________________________________
+Epoch 109:
+Learning rate:  0.000125
+Training time:  1259.25 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.0355         1.126
+T-MAE       :        0.70496       0.73663
+T-RSQ       :              1             1
+TperAtom MAE:       0.047099      0.049162
+T-Hier      :         0.5803       0.58183
+L2Reg       :          39402         39402
+Loss-Err    :         5.3798        5.5806
+Loss-Reg    :         0.6197       0.62123
+Loss        :         5.9995        6.2018
+F-RMSE      :    *    2.2227   *    2.2887
+F-MAE       :    *    1.4166   *    1.4293
+F-RSQ       :        0.99795       0.99783
+Best Loss-Err so far:   5.5591
+Epoch 00110: reducing learning rate of group 0 to 6.2500e-05.
+Epochs since last best: 6
+Current max epochs: 113
+Total epoch time:  1368.68 s
+__________________________________________________
+Epoch 110:
+Learning rate:  6.25e-05
+Training time:  1261.09 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *    1.0051   *    1.1004
+T-MAE       :    *   0.68486       0.71939
+T-RSQ       :              1             1
+TperAtom MAE:       0.045918      0.048111
+T-Hier      :    *    0.5766       0.57824
+L2Reg       :          39362         39362
+Loss-Err    :    *    5.2848   *    5.5076
+Loss-Reg    :    *   0.61597        0.6176
+Loss        :    *    5.9008   *    6.1252
+F-RMSE      :    *    2.1949   *    2.2728
+F-MAE       :    *    1.3999   *    1.4151
+F-RSQ       :        0.99801       0.99786
+Best Loss-Err so far:   5.5076
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 120
+Total epoch time:  1370.8 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 111:
+Learning rate:  6.25e-05
+Training time:  1261.22 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *   0.98936   *    1.0797
+T-MAE       :    *   0.65931   *   0.69165
+T-RSQ       :              1             1
+TperAtom MAE:    *  0.044024   *  0.046099
+T-Hier      :    *    0.5762   *    0.5769
+L2Reg       :          39325         39325
+Loss-Err    :    *    5.2351   *    5.4323
+Loss-Reg    :    *   0.61552   *   0.61623
+Loss        :    *    5.8507   *    6.0485
+F-RMSE      :    *    2.1924   *     2.255
+F-MAE       :    *     1.394   *     1.406
+F-RSQ       :          0.998       0.99789
+Best Loss-Err so far:   5.4323
+Epochs since last best: 0
+Current max epochs: 121
+Total epoch time:  1370.99 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 112:
+Learning rate:  6.25e-05
+Training time:  1257.14 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.0091        1.1032
+T-MAE       :        0.67863       0.71104
+T-RSQ       :              1             1
+TperAtom MAE:       0.045133      0.047234
+T-Hier      :        0.57716       0.57803
+L2Reg       :          39291         39291
+Loss-Err    :          5.262        5.4765
+Loss-Reg    :        0.61645       0.61732
+Loss        :         5.8785        6.0938
+F-RMSE      :    *    2.1835        2.2568
+F-MAE       :    *    1.3907   *    1.4054
+F-RSQ       :        0.99802       0.99789
+Best Loss-Err so far:   5.4323
+Epochs since last best: 1
+Current max epochs: 121
+Total epoch time:  1366.85 s
+__________________________________________________
+Epoch 113:
+Learning rate:  6.25e-05
+Training time:  1256.7 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         0.9907        1.0827
+T-MAE       :        0.66278       0.69785
+T-RSQ       :              1             1
+TperAtom MAE:       0.044283      0.046502
+T-Hier      :        0.57704       0.57711
+L2Reg       :          39256         39256
+Loss-Err    :         5.2407        5.4489
+Loss-Reg    :        0.61629       0.61637
+Loss        :         5.8569        6.0653
+F-RMSE      :         2.1939        2.2613
+F-MAE       :         1.3933        1.4071
+F-RSQ       :          0.998       0.99788
+Best Loss-Err so far:   5.4323
+Epochs since last best: 2
+Current max epochs: 121
+Total epoch time:  1365.98 s
+__________________________________________________
+Epoch 114:
+Learning rate:  6.25e-05
+Training time:  1256.57 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.0076        1.0961
+T-MAE       :        0.68353       0.71561
+T-RSQ       :              1             1
+TperAtom MAE:       0.045989      0.048035
+T-Hier      :        0.57732   *   0.57679
+L2Reg       :          39220         39220
+Loss-Err    :         5.2727        5.4722
+Loss-Reg    :        0.61654   *   0.61601
+Loss        :         5.8892        6.0882
+F-RMSE      :         2.1895        2.2561
+F-MAE       :         1.3921   *    1.4044
+F-RSQ       :        0.99802       0.99789
+Best Loss-Err so far:   5.4323
+Epochs since last best: 3
+Current max epochs: 121
+Total epoch time:  1366.55 s
+__________________________________________________
+Epoch 115:
+Learning rate:  6.25e-05
+Training time:  1263.81 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :          0.999        1.0902
+T-MAE       :        0.67812       0.71043
+T-RSQ       :              1             1
+TperAtom MAE:       0.045063      0.047152
+T-Hier      :    *   0.57352   *   0.57474
+L2Reg       :          39189         39189
+Loss-Err    :         5.2541         5.464
+Loss-Reg    :    *    0.6127   *   0.61393
+Loss        :         5.8668        6.0779
+F-RMSE      :         2.1871        2.2605
+F-MAE       :    *      1.39   *    1.4028
+F-RSQ       :        0.99802       0.99788
+Best Loss-Err so far:   5.4323
+Epochs since last best: 4
+Current max epochs: 121
+Total epoch time:  1374.14 s
+__________________________________________________
+Epoch 116:
+Learning rate:  6.25e-05
+Training time:  1262.29 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *   0.98503        1.0803
+T-MAE       :        0.65989       0.69307
+T-RSQ       :              1             1
+TperAtom MAE:    *  0.043996   *  0.046088
+T-Hier      :        0.57627       0.57626
+L2Reg       :          39156         39156
+Loss-Err    :    *    5.2121        5.4331
+Loss-Reg    :        0.61543       0.61541
+Loss        :    *    5.8276   *    6.0485
+F-RMSE      :    *    2.1794        2.2568
+F-MAE       :    *    1.3878        1.4029
+F-RSQ       :        0.99802       0.99789
+Best Loss-Err so far:   5.4323
+Epochs since last best: 5
+Current max epochs: 121
+Total epoch time:  1371.68 s
+__________________________________________________
+Epoch 117:
+Learning rate:  6.25e-05
+Training time:  1257.47 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *    0.9712   *     1.074
+T-MAE       :    *   0.65062   *   0.68649
+T-RSQ       :              1             1
+TperAtom MAE:    *  0.043447   *  0.045742
+T-Hier      :        0.57522       0.57637
+L2Reg       :          39127         39127
+Loss-Err    :    *    5.1826   *    5.4111
+Loss-Reg    :        0.61434        0.6155
+Loss        :    *     5.797   *    6.0266
+F-RMSE      :    *    2.1762   *    2.2513
+F-MAE       :    *    1.3846   *    1.3993
+F-RSQ       :        0.99803        0.9979
+Best Loss-Err so far:   5.4111
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 127
+Total epoch time:  1366.41 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 118:
+Learning rate:  6.25e-05
+Training time:  1256.99 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :        0.99527        1.0826
+T-MAE       :        0.66719       0.69958
+T-RSQ       :              1             1
+TperAtom MAE:       0.044737      0.046792
+T-Hier      :        0.57725        0.5781
+L2Reg       :          39095         39095
+Loss-Err    :         5.2333        5.4411
+Loss-Reg    :        0.61634        0.6172
+Loss        :         5.8497        6.0583
+F-RMSE      :         2.1835        2.2581
+F-MAE       :         1.3874        1.4008
+F-RSQ       :        0.99802       0.99789
+Best Loss-Err so far:   5.4111
+Epochs since last best: 1
+Current max epochs: 127
+Total epoch time:  1367.14 s
+__________________________________________________
+Epoch 119:
+Learning rate:  6.25e-05
+Training time:  1258.15 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :        0.99974        1.1012
+T-MAE       :        0.67811       0.71398
+T-RSQ       :              1             1
+TperAtom MAE:       0.045169      0.047475
+T-Hier      :        0.57677        0.5773
+L2Reg       :          39066         39066
+Loss-Err    :         5.2313        5.4617
+Loss-Reg    :        0.61584       0.61637
+Loss        :         5.8472         6.078
+F-RMSE      :    *    2.1719   *    2.2484
+F-MAE       :    *    1.3816   *    1.3981
+F-RSQ       :        0.99804       0.99791
+Best Loss-Err so far:   5.4111
+Epochs since last best: 2
+Current max epochs: 127
+Total epoch time:  1367.25 s
+__________________________________________________
+Epoch 120:
+Learning rate:  6.25e-05
+Training time:  1256.44 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :        0.98793        1.0917
+T-MAE       :        0.67283       0.70741
+T-RSQ       :              1             1
+TperAtom MAE:       0.044815      0.047093
+T-Hier      :        0.57696       0.57647
+L2Reg       :          39036         39036
+Loss-Err    :         5.2325        5.4503
+Loss-Reg    :          0.616       0.61551
+Loss        :         5.8485        6.0658
+F-RMSE      :         2.1853        2.2526
+F-MAE       :         1.3864        1.3986
+F-RSQ       :        0.99803        0.9979
+Best Loss-Err so far:   5.4111
+Epochs since last best: 3
+Current max epochs: 127
+Total epoch time:  1365.83 s
+__________________________________________________
+Epoch 121:
+Learning rate:  6.25e-05
+Training time:  1261.09 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.0057        1.1056
+T-MAE       :        0.68894        0.7252
+T-RSQ       :              1             1
+TperAtom MAE:       0.046099      0.048392
+T-Hier      :        0.57451       0.57648
+L2Reg       :          39008         39008
+Loss-Err    :         5.2625        5.4791
+Loss-Reg    :        0.61352       0.61549
+Loss        :          5.876        6.0946
+F-RMSE      :         2.1838        2.2517
+F-MAE       :         1.3841   *    1.3966
+F-RSQ       :        0.99803        0.9979
+Best Loss-Err so far:   5.4111
+Epochs since last best: 4
+Current max epochs: 127
+Total epoch time:  1369.86 s
+__________________________________________________
+Epoch 122:
+Learning rate:  6.25e-05
+Training time:  1257.0 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :    *   0.96737        1.0756
+T-MAE       :        0.65091       0.68685
+T-RSQ       :              1             1
+TperAtom MAE:    *  0.043093   *   0.04543
+T-Hier      :        0.57684       0.57808
+L2Reg       :          38977         38977
+Loss-Err    :    *    5.1705   *    5.4024
+Loss-Reg    :        0.61582       0.61705
+Loss        :    *    5.7863   *    6.0195
+F-RMSE      :    *    2.1704   *    2.2449
+F-MAE       :         1.3818   *     1.395
+F-RSQ       :        0.99804       0.99791
+Best Loss-Err so far:   5.4024
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 132
+Total epoch time:  1366.96 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 123:
+Learning rate:  6.25e-05
+Training time:  1256.2 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.0231         1.118
+T-MAE       :        0.68911       0.72351
+T-RSQ       :              1             1
+TperAtom MAE:       0.045972      0.048148
+T-Hier      :        0.57608       0.57782
+L2Reg       :          38948         38948
+Loss-Err    :         5.2683        5.4862
+Loss-Reg    :        0.61503       0.61677
+Loss        :         5.8833        6.1029
+F-RMSE      :         2.1741        2.2492
+F-MAE       :         1.3819        1.3955
+F-RSQ       :        0.99804        0.9979
+Best Loss-Err so far:   5.4024
+Epochs since last best: 1
+Current max epochs: 132
+Total epoch time:  1365.91 s
+__________________________________________________
+Epoch 124:
+Learning rate:  6.25e-05
+Training time:  1258.94 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :        0.97663        1.0742
+T-MAE       :        0.65871        0.6921
+T-RSQ       :              1             1
+TperAtom MAE:       0.043925      0.046096
+T-Hier      :        0.57514       0.57591
+L2Reg       :          38919         38919
+Loss-Err    :         5.1867   *    5.4013
+Loss-Reg    :        0.61406       0.61483
+Loss        :         5.8008   *    6.0161
+F-RMSE      :         2.1717   *    2.2413
+F-MAE       :    *    1.3796   *    1.3937
+F-RSQ       :        0.99804       0.99792
+Best Loss-Err so far:   5.4013
+Patience for training restored.
+Epochs since last best: 0
+Current max epochs: 134
+Total epoch time:  1367.38 s
+**** NEW BEST MODEL - Saving! ****
+__________________________________________________
+Epoch 125:
+Learning rate:  6.25e-05
+Training time:  1256.97 s
+Validating...
+                       train         valid
+------------------------------------------
+T-RMSE      :         1.0265        1.1118
+T-MAE       :        0.70178       0.73431
+T-RSQ       :              1             1
+TperAtom MAE:       0.046344      0.048393
+T-Hier      :    *   0.57262   *   0.57441
+L2Reg       :          38891         38891
+Loss-Err    :         5.2874        5.4855
+Loss-Reg    :    *   0.61151   *    0.6133
+Loss        :         5.8989        6.0988
+F-RMSE      :         2.1797        2.2461
+F-MAE       :    *    1.3794   *    1.3933
+F-RSQ       :        0.99803       0.99791
+Best Loss-Err so far:   5.4013
+Epochs since last best: 1
+Current max epochs: 134
+Total epoch time:  1366.31 s
+__________________________________________________
+Epoch 126:
+Learning rate:  6.25e-05
