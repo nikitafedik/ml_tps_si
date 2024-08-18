@@ -2,7 +2,7 @@
  
  This repo contains Supporting Materials for the article **"Challenges and Opportunities for Machine Learning Potentials in Transition Path Sampling: Alanine Dipeptide and Azobenzene Studies"** by Nikita Fedik, Wei Li, Nicholas Lubbers, Benjamin Nebgen, Sergei Tretiak, Ying Wai Li   
 
- 📄 [PREPRINT on ChemRxiv](https://chemrxiv.org/engage/chemrxiv/article-details/669eb1ff01103d79c549d42c)   
+ 📄 [PREPRINT on ChemRxiv - v2 uploaded](https://chemrxiv.org/engage/chemrxiv/article-details/66af06f1c9c6a5c07af610b6)   
  📄 Final article on publisher site - will be added after publication
 
 If you have any comments/questions/requests, feel free to **contact me**:    
