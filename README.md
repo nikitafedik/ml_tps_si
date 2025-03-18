@@ -49,7 +49,8 @@ Prerequisites:
 - OpenFF
 - openbabel
 
-It's best to create a dedicated conda environment for this project.
+It's best to create a dedicated conda environment for this project.    
+
 ---
 
 # <img src="db.png" width="24" height="24" alt="Favicon"> DATA
